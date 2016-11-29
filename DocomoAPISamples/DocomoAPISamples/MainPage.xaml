@@ -1,0 +1,140 @@
+﻿<Page
+    x:Class="DocomoAPISamples.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DocomoAPISamples"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <ScrollViewer VerticalScrollMode="Enabled">
+        <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <Grid x:Name="HiraganaSample">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="ひらがな　カタカナ化サンプル" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            
+                <TextBlock Grid.Row="1" Text="変換する文字列" HorizontalAlignment="Center"></TextBlock>
+                <TextBox x:Name="HiraganaSentence" Grid.Row="2"></TextBox>
+            
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="変換モード" HorizontalAlignment="Center"></TextBlock>
+                <ComboBox x:Name="HiraganaMode" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" />
+
+                <Button x:Name="HiraganaConvertButton" Grid.Row="2" Grid.Column="2" Click="HiraganaConvert" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="変換"/>
+
+                <TextBlock  Grid.Row="3" Grid.ColumnSpan="3" Text="変換結果" VerticalAlignment="Center"></TextBlock>
+                <TextBox x:Name="HiraganaResult" Grid.Row="4" Grid.ColumnSpan="3" IsReadOnly="True"></TextBox>
+            </Grid>
+            <Grid x:Name="MorphSample">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="形態素解析サンプル" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+
+                <TextBlock Grid.Row="1" Text="解析する文字列" HorizontalAlignment="Center"></TextBlock>
+                <TextBox x:Name="MorphSentence" Grid.Row="2"></TextBox>
+
+                <TextBlock Grid.Row="3" Grid.ColumnSpan="2" Text="形態素情報フィルタ" HorizontalAlignment="Center"></TextBlock>
+                <GridView Grid.Row="4" Grid.ColumnSpan="2" Padding="0" HorizontalAlignment="Center">
+                    <CheckBox x:Name="MorphForm" Content="表記" IsChecked="True"></CheckBox>
+                    <CheckBox x:Name="MorphPos" Content="形態素" IsChecked="True"></CheckBox>
+                    <CheckBox x:Name="MorphRead" Content="読み" IsChecked="True"></CheckBox>
+                </GridView>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="形態素品詞フィルタ(,区切り)" HorizontalAlignment="Center"></TextBlock>
+                <TextBox x:Name="MorphPosFilter" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"></TextBox>
+
+                <Button x:Name="MorphExtractButton" Grid.Row="4" Grid.Column="2" Click="MorphExtract" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="解析"/>
+
+
+                <TextBlock  Grid.Row="5" Grid.ColumnSpan="3" Text="解析結果" VerticalAlignment="Center"></TextBlock>
+                <TextBox x:Name="MorphResult" Grid.Row="6" Grid.ColumnSpan="3" IsReadOnly="True"></TextBox>
+
+            </Grid>
+            <Grid x:Name="EntitySample">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="固有表現抽出サンプル" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+
+            <TextBlock Grid.Row="1" Text="解析する文字列" HorizontalAlignment="Center"></TextBlock>
+            <TextBox x:Name="EntitySentence" Grid.Row="2" Grid.ColumnSpan="2"></TextBox>
+
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="1" Text="固有表現種別フィルタ" HorizontalAlignment="Center"></TextBlock>
+            <GridView Grid.Row="4" Grid.ColumnSpan="1" Padding="0" HorizontalAlignment="Center">
+                <CheckBox x:Name="EntityArt" Content="人工物名" IsChecked="True"></CheckBox>
+                <CheckBox x:Name="EntityOrg" Content="組織名" IsChecked="True"></CheckBox>
+                <CheckBox x:Name="EntityPsn" Content="人名" IsChecked="True"></CheckBox>
+                <CheckBox x:Name="EntityLoc" Content="地名" IsChecked="True"></CheckBox>
+                <CheckBox x:Name="EntityDat" Content="日付表現" IsChecked="True"></CheckBox>
+                <CheckBox x:Name="EntityTim" Content="時刻表現" IsChecked="True"></CheckBox>
+            </GridView>
+
+            <Button x:Name="EntityExtractButton" Grid.Row="4" Grid.Column="2" Click="EntityExtract" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="解析"/>
+
+
+            <TextBlock  Grid.Row="5" Grid.ColumnSpan="3" Text="解析結果" VerticalAlignment="Center"></TextBlock>
+            <TextBox x:Name="EntityResult" Grid.Row="6" Grid.ColumnSpan="3" IsReadOnly="True"></TextBox>
+
+        </Grid>
+            <Grid x:Name="SimilaritySample">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="20"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="語句間類似度サンプル" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+
+                <TextBlock Grid.Row="1" Text="語句1" HorizontalAlignment="Center"></TextBlock>
+                <TextBox x:Name="SimiraritySentence1" Grid.Row="2"></TextBox>
+
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="語句2" HorizontalAlignment="Center"></TextBlock>
+                <TextBox x:Name="SimiraritySentence2" Grid.Row="2" Grid.Column="1" ></TextBox>
+
+
+                <Button x:Name="SimirarityCalcButton" Grid.Row="2" Grid.Column="2" Click="SimirarityCalc" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="変換"/>
+
+                <TextBlock  Grid.Row="3" Grid.ColumnSpan="3" Text="類似度" VerticalAlignment="Center"></TextBlock>
+                <TextBox x:Name="SimirarityResult" Grid.Row="4" Grid.ColumnSpan="3" IsReadOnly="True"></TextBox>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
