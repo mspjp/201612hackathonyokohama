@@ -9,6 +9,7 @@ nodejsフォルダの中を使用してください
 
 # リポジトリ構成
 
+```
 /csharp/SampleBot/SampleBot -- ハッカソンBotの.Netテンプレート
 /csharp/SampleBot/BotLibrary -- Bot用のライブラリ(docomoAPIなどの実装)
 /csharp/SampleBot/ApiSamples -- Bot用のライブラリコピペ用コードとテストコンソールプログラム
@@ -16,3 +17,4 @@ nodejsフォルダの中を使用してください
 /nodejs/SampleBot/app.js -- ハッカソンBotのnodejsテンプレート
 /nodejs/SampleBot/docomoapi.js -- docomoAPIのnode.js実装モジュール
 /nodejs/SampleBot/apisamples.js -- Bot用のライブラリコピペ用コードとテストコンソールプログラム
+```
