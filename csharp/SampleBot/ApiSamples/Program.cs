@@ -1,11 +1,11 @@
-﻿using DocomoAPISamples.API;
+﻿using BotLibrary.Docomo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MspHackathonApp
+namespace ApiSamples
 {
     class Program
     {
@@ -32,7 +32,7 @@ namespace MspHackathonApp
                 {
                     case "1":
                         Console.WriteLine("形態素解析(MorphAnalysisAsync) 開始");
-                        
+
                         var results = MorphAnalysisAsync(_docomoApiKey).Result;
                         foreach (var r in results)
                         {
@@ -42,7 +42,7 @@ namespace MspHackathonApp
                         break;
                     case "2":
                         Console.WriteLine("ひがらな変換(HiraganaConvertAsync) 開始");
-                        
+
                         var result = HiraganaConvertAsync(_docomoApiKey).Result;
                         Console.WriteLine(result);
                         break;
@@ -76,7 +76,7 @@ namespace MspHackathonApp
             Morph.InfoFilter info = Morph.InfoFilter.FORM | Morph.InfoFilter.POS;
             var results = await client.ExecAsync(text, info);
             return results;
-            
+
         }
 
         private static async Task<string> HiraganaConvertAsync(string docomoApiKey)
@@ -104,6 +104,14 @@ namespace MspHackathonApp
             var client = new Similarity(docomoApiKey);
             var result = await client.ExecAsync(text1, text2);
             return result;
+        }
+
+        private static async Task FaceDetectAsync()
+        {
+            /*string faceAPIKey = "275f7ae3c0ca42fda3eca8bee0956fad";
+            var client = new FaceServiceClient(faceAPIKey);
+            var faces = await client.DetectAsync(,);
+            */
         }
     }
 }
