@@ -12,7 +12,7 @@ namespace DocomoAPISamples.API
     /// <summary>
     /// 類似度検出を行うAPIを呼び出すクラス
     /// </summary>
-    class Similarity
+    public class Similarity
     {
         private string APIKey;
 
