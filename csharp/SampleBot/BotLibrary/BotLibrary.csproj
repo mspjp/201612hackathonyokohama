@@ -35,7 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApiKey.cs" />
-    <Compile Include="KeyStore.cs" />
     <Compile Include="Docomo\Entity.cs" />
     <Compile Include="Docomo\Hiragana.cs" />
     <Compile Include="Docomo\Morph.cs" />

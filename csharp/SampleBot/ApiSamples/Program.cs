@@ -12,8 +12,8 @@ namespace ApiSamples
 {
     class Program
     {
-        private static string _docomoApiKey = KeyStore.Instance.Keys["DOCOMO_APIKEY"];
-        private static string _faceApiKey = KeyStore.Instance.Keys["FACE_APIKEY"];
+        private static string _docomoApiKey = ApiKey.DOCOMO_APIKEY;
+        private static string _faceApiKey = ApiKey.FACE_APIKEY;
         static void Main(string[] args)
         {
             while (true)
