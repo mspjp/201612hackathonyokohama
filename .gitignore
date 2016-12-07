@@ -3,6 +3,7 @@
 
 # for API key
 apikey.json
+csharp/SampleBot/BotLibrary/Properties/Resources.resx
 
 # for mac
 .DS_Store
