@@ -11,7 +11,7 @@ namespace SampleBot
     public class Rule
     {
         public string Pattern { get; set; }
-        public List<string> Responces { get; set; } = new List<string>();
+        public List<string> Responses { get; set; } = new List<string>();
     }
     
     public class RuleManager
@@ -32,13 +32,13 @@ namespace SampleBot
             {
                 if (Regex.IsMatch(utterance,rule.Pattern))
                 {
-                    if(rule.Responces.Count == 1)
+                    if(rule.Responses.Count == 1)
                     {
-                        responses.Add(rule.Responces.First());
+                        responses.Add(rule.Responses.First());
                     }else
                     {
-                        int pick = _rand.Next(rule.Responces.Count);
-                        responses.Add(rule.Responces.ElementAt(pick));
+                        int pick = _rand.Next(rule.Responses.Count);
+                        responses.Add(rule.Responses.ElementAt(pick));
                     }
                 }
             }
@@ -63,9 +63,11 @@ namespace SampleBot
                             string[] cols = line.Split(',');
                             rule.Pattern = cols[0];
                             string[] subCols = cols[1].Split(':');
-                            rule.Responces = subCols.ToList();
+                            rule.Responses = subCols.ToList();
                             rules.Add(rule);
                         }
+
+                        rules.RemoveAt(0);
                     }
 
                     _instance = new RuleManager(rules);
