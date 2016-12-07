@@ -3,6 +3,7 @@
 
 # for API key
 ApiKey.cs
+apikey.json
 
 # for mac
 .DS_Store
