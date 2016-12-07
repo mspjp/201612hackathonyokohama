@@ -14,6 +14,7 @@ namespace BotLibrary
         public Dictionary<string, string> Keys { get; set; }
         private ApiKey()
         {
+            Keys = new Dictionary<string, string>();
             Keys.Add("FACE_APIKEY",Properties.Resources.FACE_APIKEY);
             Keys.Add("DOCOMO_APIKEY", Properties.Resources.DOCOMO_APIKEY);
         }
