@@ -9,24 +9,24 @@ using System.Threading.Tasks;
 
 namespace BotLibrary
 {
-    public class ApiKey
+    public class KeyStore
     {
         public Dictionary<string, string> Keys { get; set; }
-        private ApiKey()
+        private KeyStore()
         {
             Keys = new Dictionary<string, string>();
-            Keys.Add("FACE_APIKEY",Properties.Resources.FACE_APIKEY);
-            Keys.Add("DOCOMO_APIKEY", Properties.Resources.DOCOMO_APIKEY);
+            Keys.Add("FACE_APIKEY",ApiKey.FACE_APIKEY);
+            Keys.Add("DOCOMO_APIKEY",ApiKey.DOCOMO_APIKEY);
         }
 
-        private static ApiKey _instance;
+        private static KeyStore _instance;
 
-        public static ApiKey Instance
+        public static KeyStore Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new ApiKey();
+                    _instance = new KeyStore();
 
                 return _instance;
             }
