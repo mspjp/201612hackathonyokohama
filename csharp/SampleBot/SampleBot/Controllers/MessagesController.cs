@@ -18,10 +18,36 @@ namespace SampleBot
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        private async Task OnCommandAsync(ConnectorClient connector, Activity message,string command)
+        {
+            if(command == "command1")
+            {
+                var reply = message.CreateReply("execute "+command);
+                await connector.Conversations.ReplyToActivityAsync(reply);
+            }
+        }
+
         private async Task OnMessageAsync(ConnectorClient connector,Activity message)
         {
-            Activity reply = message.CreateReply($"You sent {message.Text} ");
-            await connector.Conversations.ReplyToActivityAsync(reply);
+            var responses = RuleManager.Instance.SearchResponses(message.Text);
+            foreach(var res in responses)
+            {
+                if (res.Contains("{") && res.Contains("}"))
+                {
+                    string commandName = res.Replace("{","").Replace("}","");
+                    await OnCommandAsync(connector,message,commandName);
+                }else
+                {
+                    var reply = message.CreateReply(res);
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+            }
+
+            if(responses.Count == 0)
+            {
+                var reply = message.CreateReply("ルールにヒットしませんでした");
+                await connector.Conversations.ReplyToActivityAsync(reply);
+            }
         }
         /// <summary>
         /// POST: api/Messages
