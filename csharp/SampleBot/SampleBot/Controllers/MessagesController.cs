@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Web.Http.Results;
 using System.Collections.Generic;
+using BotLibrary;
 
 namespace SampleBot
 {
