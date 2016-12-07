@@ -10,6 +10,7 @@ using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 using System.IO;
 using System.Web.Http.Results;
+using System.Collections.Generic;
 
 namespace SampleBot
 {
@@ -19,7 +20,6 @@ namespace SampleBot
         private async Task OnMessageAsync(ConnectorClient connector,Activity message)
         {
             Activity reply = message.CreateReply($"You sent {message.Text} ");
-            throw new Exception("hogehog");
             await connector.Conversations.ReplyToActivityAsync(reply);
         }
         /// <summary>
@@ -34,20 +34,29 @@ namespace SampleBot
                 await OnMessageAsync(connector, activity);
             }catch(Exception e)
             {
-                connector.Conversations.ReplyToActivity(activity.CreateReply(e.Message));
                 WriteLog(e.Message);
+                connector.Conversations.ReplyToActivity(activity.CreateReply("エラーが発生しました: "+e.Message));
+                
             }
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
         }
 
-        private void WriteLog(string log)
+        public HttpResponseMessage Get()
         {
-            using (var writer = new StreamWriter("../default.htm",true))
-            {
-                var logStr = string.Format("[{0}] {1}", DateTime.Now.ToString("MM/dd/ HH:mm:ss"), log);
-                writer.WriteAsync(logStr).Wait();
-            }
+            var viewStr ="*** errors *** \n\n\n" + string.Join("\n",_logList);
+            var message = Request.CreateResponse(HttpStatusCode.OK);
+            message.Content = new StringContent(viewStr);
+            return message;
+        }
+
+        private static List<string> _logList = new List<string>();
+
+        public void WriteLog(string log)
+        {
+            var logStr = string.Format("[{0}] {1}", DateTime.Now.ToString("MM/dd/ HH:mm:ss"), log);
+            _logList.Add(logStr);
+            
         }
         
     }
