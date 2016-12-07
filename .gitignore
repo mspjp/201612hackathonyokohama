@@ -4,6 +4,9 @@
 # for mac
 .DS_Store
 
+# for vscode
+.vscode/
+
 # User-specific files
 *.suo
 *.user
