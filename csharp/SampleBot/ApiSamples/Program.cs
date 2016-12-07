@@ -1,4 +1,7 @@
-﻿using BotLibrary.Docomo;
+﻿using BotLibrary;
+using BotLibrary.Docomo;
+using Microsoft.ProjectOxford.Face;
+using Microsoft.ProjectOxford.Face.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,8 @@ namespace ApiSamples
 {
     class Program
     {
-        private static string _docomoApiKey = "77356844387a3351332f6267716f536d684e41584d706f78625430495872343566754f5862713031574143";
+        private static string _docomoApiKey = ApiKey.Instance.Keys["DOCOMO_APIKEY"];
+        private static string _faceApiKey = ApiKey.Instance.Keys["FACE_APIKEY"];
         static void Main(string[] args)
         {
             while (true)
@@ -20,6 +24,7 @@ namespace ApiSamples
                 Console.WriteLine("ひらがな変換: 2");
                 Console.WriteLine("要素抽出: 3");
                 Console.WriteLine("文章類似度計算: 4");
+                Console.WriteLine("顔検出: 5");
 
                 Console.WriteLine("終了: 999");
                 Console.Write(":");
@@ -58,6 +63,12 @@ namespace ApiSamples
 
                         var resultSimilarity = SimirarityCalcAsync(_docomoApiKey).Result;
                         Console.WriteLine(resultSimilarity);
+                        break;
+                    case "5":
+                        Console.WriteLine("顔検出 開始");
+
+                        var resultFaceDetect = FaceDetectAsync(_faceApiKey).Result;
+                        Console.WriteLine(resultFaceDetect.First().FaceAttributes.Age+"歳");
                         break;
                     default:
                         Console.WriteLine("そのようなコマンドはありません");
@@ -106,12 +117,15 @@ namespace ApiSamples
             return result;
         }
 
-        private static async Task FaceDetectAsync()
+        private static async Task<Face[]> FaceDetectAsync(string faceApiKey)
         {
-            /*string faceAPIKey = "275f7ae3c0ca42fda3eca8bee0956fad";
-            var client = new FaceServiceClient(faceAPIKey);
-            var faces = await client.DetectAsync(,);
-            */
+            var client = new FaceServiceClient(_faceApiKey);
+            var url = "http://yukainanakamatati.com/wp-content/uploads/2014/07/a1-e1406013277329.jpg";
+            var faces = await client.DetectAsync(url,true,false,new List<FaceAttributeType>()
+            {
+                FaceAttributeType.Age
+            });
+            return faces;
         }
     }
 }
