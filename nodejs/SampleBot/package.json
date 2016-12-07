@@ -1,8 +1,8 @@
 {
-  "name": "SampleBot",
+  "name": "samplebot",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "botbuilder": "^3.4.4",
+    "date-utils": "^1.2.21",
     "restify": "^4.3.0"
   }
 }
