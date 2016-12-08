@@ -4,7 +4,7 @@ var fs = require('fs');
 var apikeyPath = './apikey.json';
 var API_KEY = JSON.parse(fs.readFileSync(apikeyPath,'utf8'));
 
-var Docomo = require("./docomoapi.js")
+var Docomo = require("./docomoapi.js");
 var docomo = new Docomo(API_KEY.DOCOMO_APIKEY);
 
 function showDescription(){
