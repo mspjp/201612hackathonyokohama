@@ -16,6 +16,7 @@ function onMessage(session){
                 var pick = Math.floor( Math.random() * rule.responses.length );
                 responses.push(rule.responses[pick]);
             }
+            break;
         }
     }
 
