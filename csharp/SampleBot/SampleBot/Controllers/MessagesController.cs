@@ -18,15 +18,7 @@ namespace SampleBot
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private async Task OnCommandAsync(ConnectorClient connector, Activity message,string command)
-        {
-            if(command == "command1")
-            {
-                var reply = message.CreateReply("execute "+command);
-                await connector.Conversations.ReplyToActivityAsync(reply);
-            }
-        }
-
+        
         private async Task OnMessageAsync(ConnectorClient connector,Activity message)
         {
             var responses = RuleManager.Instance.SearchResponses(message.Text);
@@ -49,6 +41,16 @@ namespace SampleBot
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
         }
+
+        private async Task OnCommandAsync(ConnectorClient connector, Activity message, string command)
+        {
+            if (command == "command1")
+            {
+                var reply = message.CreateReply("execute " + command);
+                await connector.Conversations.ReplyToActivityAsync(reply);
+            }
+        }
+
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
