@@ -40,8 +40,7 @@ namespace SampleBot
             {
                 var imageUrl = message.Attachments.First().ContentUrl;
                 var client = new FaceServiceClient(ApiKey.FACE_APIKEY);
-                var url = "http://yukainanakamatati.com/wp-content/uploads/2014/07/a1-e1406013277329.jpg";
-                var faces = await client.DetectAsync(url, true, false, new List<FaceAttributeType>()
+                var faces = await client.DetectAsync(imageUrl, true, false, new List<FaceAttributeType>()
                 {
                     FaceAttributeType.Age,
                     FaceAttributeType.Smile
