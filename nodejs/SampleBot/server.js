@@ -4,14 +4,10 @@ var fs = require('fs');
 var cognitive = require('./cognitive');
 require('date-utils');
 
-
-function onCommand(session,command){
-    if(command === "command1"){
-        session.send("execute "+command);
-    }
-}
-
+//Botにメッセージがくるとここが呼び出される
 function onMessage(session){
+    //rule.csvに書いてあるルールとマッチングを行う
+    //マッチしたルールが2つ以上あると最初のルールが選択される
     var responses = [];
     for(var rule of rules){
         var message = session.message.text;
@@ -22,6 +18,7 @@ function onMessage(session){
                 var pick = Math.floor( Math.random() * rule.responses.length );
                 responses.push(rule.responses[pick]);
             }
+            break;
         }
     }
 
@@ -34,15 +31,42 @@ function onMessage(session){
         }
     }
 
+    //アタッチメント(画像など)が添付されているとこの中が実行される
+    if(session.message.attachments.length > 0){
+        //アタッチメントのURL
+        var imageUrl = session.message.attachments[0].contentUrl;
+        //Face APIを呼び出す
+        cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"smile",function(error,response,body){
+            if (!error && response.statusCode == 200) {
+                console.log(body);
+            } else {
+                console.log('error: '+ JSON.stringify(response));
+            }
+        });
+    }
+
+    //マッチするルールがないなら
     if(responses.length == 0){
-        session.send("ルールにヒットしませんでした");
+        session.send("今日はいい天気ですね");
     }
 }
 
+//ルールに{command}が入っていればここが呼び出される
+function onCommand(session,command){
+    if(command === "command1"){
+        session.send("execute "+command);
+    }
+}
+
+//apikey.jsonに書いてあるAPIキーを読み込む
 var API_KEY = JSON.parse(fs.readFileSync('./apikey.json','utf8'));
+//rule.csvのルールを読み込む
 var rules = [];
 fs.readFileSync('./rule.csv').toString().split('\n').forEach(function (line) {
-	var cols = line.split(',');
+	if(line.startsWith("//")||line==""){
+        return;
+    }
+    var cols = line.split(',');
     var subCols = cols[1].split(':');
     rules.push({
         pattern:cols[0],
@@ -60,6 +84,7 @@ function writeLog(log){
     fs.appendFileSync('index.html',logStr,'utf8');
 }
 
+//BotFrameworkを初期化する
 var connector = new builder.ChatConnector({
     appId: API_KEY.BOT_APIKEY,
     appPassword: API_KEY.BOT_APISECRET
@@ -86,6 +111,7 @@ server.get(/.*/, restify.serveStatic({
 	'default': 'index.html'
 }));
 
+//node.jsサーバーを起動する
 server.listen(process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });

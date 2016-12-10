@@ -12,23 +12,18 @@ using System.IO;
 using System.Web.Http.Results;
 using System.Collections.Generic;
 using BotLibrary;
+using Microsoft.ProjectOxford.Face;
 
 namespace SampleBot
 {
     [BotAuthentication]
     public class MessagesController : ApiController
     {
-        private async Task OnCommandAsync(ConnectorClient connector, Activity message,string command)
-        {
-            if(command == "command1")
-            {
-                var reply = message.CreateReply("execute "+command);
-                await connector.Conversations.ReplyToActivityAsync(reply);
-            }
-        }
-
+        //Botにメッセージがくるとここが呼び出される
         private async Task OnMessageAsync(ConnectorClient connector,Activity message)
         {
+            //rule.csvに書いてあるルールとマッチングを行う
+            //マッチしたルールが2つ以上あると最初のルールが選択される
             var responses = RuleManager.Instance.SearchResponses(message.Text);
             foreach(var res in responses)
             {
@@ -41,18 +36,53 @@ namespace SampleBot
                     var reply = message.CreateReply(res);
                     await connector.Conversations.ReplyToActivityAsync(reply);
                 }
+                break;
             }
 
+            //アタッチメント(画像など)が添付されているとこの中が実行される
+            if(message.Attachments.Count > 0)
+            {
+                //アタッチメントのURL
+                var imageUrl = message.Attachments.First().ContentUrl;
+                //Face APIを呼び出す
+                var client = new FaceServiceClient(ApiKey.FACE_APIKEY);
+                var faces = await client.DetectAsync(imageUrl, true, false, new List<FaceAttributeType>()
+                {
+                    FaceAttributeType.Age,
+                    FaceAttributeType.Smile
+                });
+
+                if (faces.Count() == 0)
+                {
+                    var reply = message.CreateReply("顔が検出できませんでした");
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+                else
+                {
+                    var reply = message.CreateReply("素敵なお顔ですね！ "+faces.First().FaceAttributes.Age+"歳ですか？");
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+            }
+
+            //マッチするルールがないなら
             if(responses.Count == 0)
             {
-                var reply = message.CreateReply("ルールにヒットしませんでした");
+                var reply = message.CreateReply("今日はいい天気ですね！");
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
         }
-        /// <summary>
-        /// POST: api/Messages
-        /// Receive a message from a user and reply to it
-        /// </summary>
+
+        //ルールに{command}が入っていればここが呼び出される
+        private async Task OnCommandAsync(ConnectorClient connector, Activity message, string command)
+        {
+            if (command == "command1")
+            {
+                var reply = message.CreateReply("execute " + command);
+                await connector.Conversations.ReplyToActivityAsync(reply);
+            }
+        }
+
+        //Bot Connectorからここが呼び出される
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
             ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
@@ -61,6 +91,7 @@ namespace SampleBot
                 await OnMessageAsync(connector, activity);
             }catch(Exception e)
             {
+                //何かエラーが発生するとログに記録してエラー文を出す
                 WriteLog(e.Message);
                 connector.Conversations.ReplyToActivity(activity.CreateReply("エラーが発生しました: "+e.Message));
                 
