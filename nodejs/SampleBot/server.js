@@ -5,12 +5,6 @@ var cognitive = require('./cognitive');
 require('date-utils');
 
 
-function onCommand(session,command){
-    if(command === "command1"){
-        session.send("execute "+command);
-    }
-}
-
 function onMessage(session){
     var responses = [];
     for(var rule of rules){
@@ -36,6 +30,12 @@ function onMessage(session){
 
     if(responses.length == 0){
         session.send("ルールにヒットしませんでした");
+    }
+}
+
+function onCommand(session,command){
+    if(command === "command1"){
+        session.send("execute "+command);
     }
 }
 
