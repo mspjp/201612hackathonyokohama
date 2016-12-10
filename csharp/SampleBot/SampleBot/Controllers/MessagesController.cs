@@ -34,6 +34,7 @@ namespace SampleBot
                     var reply = message.CreateReply(res);
                     await connector.Conversations.ReplyToActivityAsync(reply);
                 }
+                break;
             }
 
             if(message.Attachments.Count > 0)
