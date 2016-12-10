@@ -20,6 +20,17 @@ function onMessage(session){
         }
     }
 
+    if(session.message.attachments.length > 0){
+        var imageUrl = session.message.attachments[0].contentUrl;
+        cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"smile",function(error,response,body){
+            if (!error && response.statusCode == 200) {
+                console.log(body);
+            } else {
+                console.log('error: '+ JSON.stringify(response));
+            }
+        });
+    }
+
     for(var res of responses){
         if(res.indexOf('{')!=-1&&res.indexOf('}')!=-1){
             var command = res.replace('{','').replace('}','');
@@ -43,7 +54,10 @@ function onCommand(session,command){
 var API_KEY = JSON.parse(fs.readFileSync('./apikey.json','utf8'));
 var rules = [];
 fs.readFileSync('./rule.csv').toString().split('\n').forEach(function (line) {
-	var cols = line.split(',');
+	if(line.startsWith("//")||line==""){
+        return;
+    }
+    var cols = line.split(',');
     var subCols = cols[1].split(':');
     rules.push({
         pattern:cols[0],
