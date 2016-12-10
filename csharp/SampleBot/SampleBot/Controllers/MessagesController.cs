@@ -12,6 +12,7 @@ using System.IO;
 using System.Web.Http.Results;
 using System.Collections.Generic;
 using BotLibrary;
+using Microsoft.ProjectOxford.Face;
 
 namespace SampleBot
 {
@@ -35,9 +36,32 @@ namespace SampleBot
                 }
             }
 
+            if(message.Attachments.Count > 0)
+            {
+                var imageUrl = message.Attachments.First().ContentUrl;
+                var client = new FaceServiceClient(ApiKey.FACE_APIKEY);
+                var url = "http://yukainanakamatati.com/wp-content/uploads/2014/07/a1-e1406013277329.jpg";
+                var faces = await client.DetectAsync(url, true, false, new List<FaceAttributeType>()
+                {
+                    FaceAttributeType.Age,
+                    FaceAttributeType.Smile
+                });
+
+                if (faces.Count() == 0)
+                {
+                    var reply = message.CreateReply("顔が検出できませんでした");
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+                else
+                {
+                    var reply = message.CreateReply("素敵なお顔ですね！ "+faces.First().FaceAttributes.Age+"歳ですか？");
+                    await connector.Conversations.ReplyToActivityAsync(reply);
+                }
+            }
+
             if(responses.Count == 0)
             {
-                var reply = message.CreateReply("ルールにヒットしませんでした");
+                var reply = message.CreateReply("今日はいい天気ですね！");
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
         }
