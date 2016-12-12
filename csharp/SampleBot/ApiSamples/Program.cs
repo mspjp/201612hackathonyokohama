@@ -29,7 +29,7 @@ namespace ApiSamples
                 Console.WriteLine("文章類似度計算: 4");
                 Console.WriteLine("顔検出: 5");
                 Console.WriteLine("感情検出: 6");
-
+                Console.WriteLine("対話: 7");
                 Console.WriteLine("終了: 999");
                 Console.Write(":");
                 var command = Console.ReadLine();
@@ -89,6 +89,20 @@ namespace ApiSamples
                         Console.WriteLine("驚き: " + resultEmotionDetect.First().Scores.Surprise);
                         Console.WriteLine("幸福: " + resultEmotionDetect.First().Scores.Happiness);
                         break;
+                    case "7":
+                        Console.WriteLine("対話API 対話モード(DialogueAsync) 開始");
+                        var resultDialogue1 = DialogueAsync(_docomoApiKey).Result.Result;
+                        Console.WriteLine(resultDialogue1);
+
+                        Console.WriteLine("対話API しりとりモード-連続的な対話を行うケース(DialogueModeSrtrAsync) 開始");
+                        var resultDialogue2 = DialogueModeSrtrAsync(_docomoApiKey).Result;
+                        Console.WriteLine(string.Join(">", resultDialogue2));
+
+
+                        Console.WriteLine("対話API 対話モード-ユーザーの情報を追加したケース-赤ちゃん風(DialogueUserAsync) 開始");
+                        var resultDialogue3 = DialogueUserAsync(_docomoApiKey).Result.Result;
+                        Console.WriteLine(resultDialogue3);
+                        break;
                     default:
                         Console.WriteLine("そのようなコマンドはありません");
                         break;
@@ -133,6 +147,53 @@ namespace ApiSamples
             var text2 = "今日は電車で公園に行きました";
             var client = new Similarity(docomoApiKey);
             var result = await client.ExecAsync(text1, text2);
+            return result;
+        }
+
+        private static async Task<Dialogue.ResultSet> DialogueAsync(string docomoApiKey) {
+            var text = "おはよう、こんにちは、こんばんわ。";
+            var client = new Dialogue(docomoApiKey);
+            var result = await client.ExecAsync(text);
+            return result;
+        }
+
+        private static async Task<List<string>> DialogueModeSrtrAsync(string docomoApiKey) {
+            var srtr = new List<string>();
+
+            var text = "さくら";
+            srtr.Add(text);
+            var client = new Dialogue(docomoApiKey);
+            var result = await client.ExecAsync(text, mode:Dialogue.DialogueMode.SRTR);
+            srtr.Add(result.Result);
+
+            text = "適当な文字";
+            srtr.Add(text);
+            //resultのIDを渡して対話を続ける
+            result = await client.ExecAsync(text, mode: Dialogue.DialogueMode.SRTR, id:result.ID);
+            srtr.Add(result.Result);
+
+            return srtr;
+        }
+
+        private static async Task<Dialogue.ResultSet> DialogueUserAsync(string docomoApiKey) {
+            var text = "こんにちは";
+            var user = new Dialogue.UserInfo();
+            //これらの情報は全てオプションなのですべて指定する必要はない
+            
+            user.BirthDay = new DateTime(1996, 1, 31);
+            //誕生日から年齢と星座を変換
+            user.ConverBirthDayToAge();
+            user.ConvertBirthDayToConstellations();
+            user.NickName = "舞黒花子";
+            user.NickNameYomi = "マイクロハナコ";
+            //地域名を指定しているがここの天気は？と聞いても何故か場所を教えろと答えるので意味が無いかも（APIコンソールも同様）
+            user.Place = "東京";
+            //Dialogue.Areas に利用可能な地域一覧が格納されている
+            user.Sex = Dialogue.Sex.MALE;
+            user.BloodType = Dialogue.BloodType.A;
+
+            var client = new Dialogue(docomoApiKey);
+            var result = await client.ExecAsync(text, user:user, characterId:30);
             return result;
         }
 
