@@ -2,11 +2,13 @@
 using BotLibrary.Docomo;
 using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
+using Microsoft.ProjectOxford.Emotion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.ProjectOxford.Emotion.Contract;
 
 namespace ApiSamples
 {
@@ -14,6 +16,7 @@ namespace ApiSamples
     {
         private static string _docomoApiKey = ApiKey.DOCOMO_APIKEY;
         private static string _faceApiKey = ApiKey.FACE_APIKEY;
+        private static string _emotionKey = ApiKey.EMOTION_APIKEY;
         static void Main(string[] args)
         {
             while (true)
@@ -25,7 +28,8 @@ namespace ApiSamples
                 Console.WriteLine("要素抽出: 3");
                 Console.WriteLine("文章類似度計算: 4");
                 Console.WriteLine("顔検出: 5");
-
+                Console.WriteLine("感情検出: 6");
+                Console.WriteLine("対話: 7");
                 Console.WriteLine("終了: 999");
                 Console.Write(":");
                 var command = Console.ReadLine();
@@ -68,7 +72,36 @@ namespace ApiSamples
                         Console.WriteLine("顔検出 開始");
 
                         var resultFaceDetect = FaceDetectAsync(_faceApiKey).Result;
-                        Console.WriteLine(resultFaceDetect.First().FaceAttributes.Age+"歳");
+                        Console.WriteLine("年齢: " + resultFaceDetect.First().FaceAttributes.Age + "歳");
+                        Console.WriteLine("性別: " + resultFaceDetect.First().FaceAttributes.Gender);
+                        Console.WriteLine("メガネ: " + resultFaceDetect.First().FaceAttributes.Glasses);
+                        break;
+                    case "6":
+                        Console.WriteLine("感情検出　開始");
+
+                        var resultEmotionDetect = EmotionDetectAync(_emotionKey).Result;
+                        Console.WriteLine("怒り: " + resultEmotionDetect.First().Scores.Anger);
+                        Console.WriteLine("軽蔑: " + resultEmotionDetect.First().Scores.Contempt);
+                        Console.WriteLine("嫌悪: " + resultEmotionDetect.First().Scores.Disgust);
+                        Console.WriteLine("恐怖: " + resultEmotionDetect.First().Scores.Fear);
+                        Console.WriteLine("中立: " + resultEmotionDetect.First().Scores.Neutral);
+                        Console.WriteLine("悲しみ: " + resultEmotionDetect.First().Scores.Sadness);
+                        Console.WriteLine("驚き: " + resultEmotionDetect.First().Scores.Surprise);
+                        Console.WriteLine("幸福: " + resultEmotionDetect.First().Scores.Happiness);
+                        break;
+                    case "7":
+                        Console.WriteLine("対話API 対話モード(DialogueAsync) 開始");
+                        var resultDialogue1 = DialogueAsync(_docomoApiKey).Result.Result;
+                        Console.WriteLine(resultDialogue1);
+
+                        Console.WriteLine("対話API しりとりモード-連続的な対話を行うケース(DialogueModeSrtrAsync) 開始");
+                        var resultDialogue2 = DialogueModeSrtrAsync(_docomoApiKey).Result;
+                        Console.WriteLine(string.Join(">", resultDialogue2));
+
+
+                        Console.WriteLine("対話API 対話モード-ユーザーの情報を追加したケース-赤ちゃん風(DialogueUserAsync) 開始");
+                        var resultDialogue3 = DialogueUserAsync(_docomoApiKey).Result.Result;
+                        Console.WriteLine(resultDialogue3);
                         break;
                     default:
                         Console.WriteLine("そのようなコマンドはありません");
@@ -117,15 +150,77 @@ namespace ApiSamples
             return result;
         }
 
+        private static async Task<Dialogue.ResultSet> DialogueAsync(string docomoApiKey) {
+            var text = "おはよう、こんにちは、こんばんわ。";
+            var client = new Dialogue(docomoApiKey);
+            var result = await client.ExecAsync(text);
+            return result;
+        }
+
+        private static async Task<List<string>> DialogueModeSrtrAsync(string docomoApiKey) {
+            var srtr = new List<string>();
+
+            var text = "さくら";
+            srtr.Add(text);
+            var client = new Dialogue(docomoApiKey);
+            var result = await client.ExecAsync(text, mode:Dialogue.DialogueMode.SRTR);
+            srtr.Add(result.Result);
+
+            text = "適当な文字";
+            srtr.Add(text);
+            //resultのIDを渡して対話を続ける
+            result = await client.ExecAsync(text, mode: Dialogue.DialogueMode.SRTR, id:result.ID);
+            srtr.Add(result.Result);
+
+            return srtr;
+        }
+
+        private static async Task<Dialogue.ResultSet> DialogueUserAsync(string docomoApiKey) {
+            var text = "こんにちは";
+            var user = new Dialogue.UserInfo();
+            //これらの情報は全てオプションなのですべて指定する必要はない
+            
+            user.BirthDay = new DateTime(1996, 1, 31);
+            //誕生日から年齢と星座を変換
+            user.ConverBirthDayToAge();
+            user.ConvertBirthDayToConstellations();
+            user.NickName = "舞黒花子";
+            user.NickNameYomi = "マイクロハナコ";
+            //地域名を指定しているがここの天気は？と聞いても何故か場所を教えろと答えるので意味が無いかも（APIコンソールも同様）
+            user.Place = "東京";
+            //Dialogue.Areas に利用可能な地域一覧が格納されている
+            user.Sex = Dialogue.Sex.MALE;
+            user.BloodType = Dialogue.BloodType.A;
+
+            var client = new Dialogue(docomoApiKey);
+            var result = await client.ExecAsync(text, user:user, characterId:30);
+            return result;
+        }
+
         private static async Task<Face[]> FaceDetectAsync(string faceApiKey)
         {
             var client = new FaceServiceClient(_faceApiKey);
             var url = "http://yukainanakamatati.com/wp-content/uploads/2014/07/a1-e1406013277329.jpg";
-            var faces = await client.DetectAsync(url,true,false,new List<FaceAttributeType>()
+            var faces = await client.DetectAsync(url, true, false, new List<FaceAttributeType>()
             {
-                FaceAttributeType.Age
+                FaceAttributeType.Age,
+                FaceAttributeType.Gender,
+                FaceAttributeType.Smile,
+                FaceAttributeType.FacialHair,
+                FaceAttributeType.HeadPose,
+                FaceAttributeType.Glasses
             });
             return faces;
+        }
+
+        private static async Task<Emotion[]> EmotionDetectAync(string emotionApiKey)
+        {
+            var client = new EmotionServiceClient(_emotionKey);
+            var url = "https://github.com/Microsoft/Cognitive-Face-Windows/blob/master/Data/detection2.jpg?raw=true";
+            var emotion = await client.RecognizeAsync(url);
+
+            return emotion;
+
         }
     }
 }

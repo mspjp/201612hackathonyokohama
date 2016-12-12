@@ -59,6 +59,10 @@ namespace SampleBot
                         string line = "";
                         while ((line = reader.ReadLine()) != null)
                         {
+                            if (line.StartsWith("//") || line == "")
+                            {
+                                continue;
+                            }
                             var rule = new Rule();
                             string[] cols = line.Split(',');
                             rule.Pattern = cols[0];
