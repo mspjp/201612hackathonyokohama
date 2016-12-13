@@ -159,7 +159,7 @@ https://{webappのID}.azurewebsites.net/api/Messages
 
 (パスワードを忘れた場合再発行になります)
 
-```OK``をおしてダイアログを閉じます
+```OK```をおしてダイアログを閉じます
 
 ![24](./img/24.png)
 
