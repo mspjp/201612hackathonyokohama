@@ -74,6 +74,7 @@ Web Appを新規作成しましょう。
 ![5](./img/5.png)
 
 ```App Serviceプラン/場所```をクリックすると下図のようになります。
+
 ```新規作成```を押し
 
 - App Service プラン - お好きなIDを入力
@@ -304,6 +305,91 @@ VisualStudioでSampleBotプロジェクトを開き、ソリューションエ�
 
 Botのページが表示されました。
 
-Botにつながるかどうか、テストしてみましょう。```Test```ボタンをクリックします。
+```Test```ボタンがありますがこれはおそらくクリックしてもエラーがでると思います。(すみません仕様です)
 
 ![38](./img/38.png)
+
+下にスクロールしていくと、チャットのテストをすることができます。
+テキトーに入力して反応を見ましょう。
+
+```こんにちは```と入力すると違った反応が見えると思います。
+
+![39](./img/39.png)
+
+### Slackと連携する
+**```学習価値のある一般技術知識```**
+
+Botの準備はできたのでメッセンジャーアプリと連携してみましょう。
+今回はいろんな都合により、slackを使いたいと思います。
+
+slackのアカウントを持っていない人は、[https://slack.com/create](https://slack.com/create)にアクセスし、アカウントを新規作成してください。
+基本的にはサイトに沿ってアカウントを作ることができるとは思いますがわからない場合はスタッフに声をかけてください。
+
+slackのアカウントを作成することができたら、作成したBotのページにアクセスします。
+
+下の方にスクロールすると、Slackのアイコンがあるので```Add```というところを押します。
+
+![40](./img/40.png)
+
+slackの設定ページが表示されます。
+
+最初の```Login to Slack～```をクリックして展開し、中にあるリンクをクリックします。
+
+![41](./img/41.png)
+
+右上の```Create New App```ボタンをクリックします。
+
+![42](./img/42.png)
+
+App Nameには英語で好きな名前を指定してください。Slack BotのIDになります。
+Development Slack TeamはデフォルトのままでOKです。
+
+```Create App```ボタンをクリックします。
+
+![43](./img/43.png)
+
+左のリストから、```OAth&Permissions```を選択し、```Redirect URL(s)```のところに、以下のURLを入力します。
+
+```
+https://slack.botframework.com
+```
+
+入力できたら、```Save Changes```ボタンを押します。
+
+![44](./img/44.png)
+
+左側のリストから、```Bot Users```をクリックし、```Add a Bot User```ボタンを押します。
+
+![45](./img/45.png)
+
+```Add Bot User```ボタンをクリックします。
+
+![46](./img/46.png)
+
+左側のリストから、```Basic Information```をクリックします。
+
+表示された```Client ID```と```Client Secret(Showボタンを押したもの)```をどこかにメモしておいてください。
+
+![47](./img/47.png)
+
+先ほどのBotとSlackの連携設定ページに戻り、```Submit your Credentials```を展開し、```Client Id```と```Client Secret```に先ほどコピーしたものを貼り付けます。
+
+```Submit Slack Credentials```ボタンを押します。
+
+![48](./img/48.png)
+
+```Autholize```をクリックします。
+
+![49](./img/49.png)
+
+```Credentials have been validated```と表示されればOKです。
+
+```I'm done configuring Slack```ボタンを押します。
+
+![50](./img/50.png)
+
+以上でslackとBot Frameworkの連携が完了しました。
+
+Slackを開くと、設定したBotがDirect Messageのところにいるので話すと、同じように会話することができます。
+
+![51](./img/51.png)

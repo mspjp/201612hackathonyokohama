@@ -40,7 +40,7 @@ namespace SampleBot
             }
 
             //アタッチメント(画像など)が添付されているとこの中が実行される
-            if(message.Attachments.Count > 0)
+            if (message.Attachments != null && message.Attachments.Count > 0)
             {
                 //アタッチメントのURL
                 var imageUrl = message.Attachments.First().ContentUrl;
@@ -59,13 +59,13 @@ namespace SampleBot
                 }
                 else
                 {
-                    var reply = message.CreateReply("素敵なお顔ですね！ "+faces.First().FaceAttributes.Age+"歳ですか？");
+                    var reply = message.CreateReply("素敵なお顔ですね！ " + faces.First().FaceAttributes.Age + "歳ですか？");
                     await connector.Conversations.ReplyToActivityAsync(reply);
                 }
             }
 
             //マッチするルールがないなら
-            if(responses.Count == 0)
+            if (responses.Count == 0)
             {
                 var reply = message.CreateReply("今日はいい天気ですね！");
                 await connector.Conversations.ReplyToActivityAsync(reply);
