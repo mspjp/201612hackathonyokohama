@@ -134,7 +134,10 @@ Botの新規登録ページが出てきたら下記の情報を入力してく�
 
 - ```Messaging endpoint```:Botを配置したWebAppのURL。
 
-```https://```{webappのID}.azurewebsites.net```/api/Messages```
+```
+https://{webappのID}.azurewebsites.net/api/Messages
+
+```
 
 を入力(↑**httpsなところに注意！**)
 
