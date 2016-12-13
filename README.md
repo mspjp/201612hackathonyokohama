@@ -30,6 +30,7 @@ public static class ApiKey{
     public static string DOCOMO_APIKEY = "";
     public static string FACE_APIKEY = "";
     public static string EMOTION_APIKEY = "";
+    public static string COMPUTER_VISION_APIKEY = "";
 }
 ```
 上記ファイルのApiKeyを自分のものに置き換えてください
