@@ -11,15 +11,21 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Web.Http.Results;
 using System.Collections.Generic;
-using BotLibrary;
 using Microsoft.ProjectOxford.Face;
 
 namespace SampleBot
 {
+    /**************************************************************
+     * Botを操作するときはこのファイルを編集します。
+     * 詳しくはTutorialを参照 https://github.com/mspjp/201612hackathonyokohama/blob/master/csharp/README.md
+     **************************************************************/
+
     [BotAuthentication]
     public class MessagesController : ApiController
     {
         //Botにメッセージがくるとここが呼び出される
+        //  第一引数 connector: 発話を返す時に使うもの
+        //  第二引数 message: 発話の内容が入っている
         private async Task OnMessageAsync(ConnectorClient connector,Activity message)
         {
             //rule.csvに書いてあるルールとマッチングを行う
@@ -39,11 +45,23 @@ namespace SampleBot
                 break;
             }
 
+            //発話のテキスト
+            var text = message.Text;
+
+            /**************************************************************
+             * コピペゾーン1: 発話が来て、ルールに何もマッチングしなかった時に通るゾーン
+             **************************************************************/
+
             //アタッチメント(画像など)が添付されているとこの中が実行される
             if (message.Attachments != null && message.Attachments.Count > 0)
             {
                 //アタッチメントのURL
                 var imageUrl = message.Attachments.First().ContentUrl;
+
+                /**************************************************************
+                 * コピペゾーン2: 発話がきて、アタッチメント(画像)が添付されていた時に通るゾーン
+                 **************************************************************/
+
                 //Face APIを呼び出す
                 var client = new FaceServiceClient(ApiKey.FACE_APIKEY);
                 var faces = await client.DetectAsync(imageUrl, true, false, new List<FaceAttributeType>()
@@ -67,20 +85,37 @@ namespace SampleBot
             //マッチするルールがないなら
             if (responses.Count == 0)
             {
+                /**************************************************************
+                 * コピペゾーン3: 用意したルールに何もマッチングしなかった発話が来た時に通るゾーン
+                 **************************************************************/
+
                 var reply = message.CreateReply("今日はいい天気ですね！");
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
         }
 
         //ルールに{command}が入っていればここが呼び出される
+        //  第一引数 connector: 発話を返す時に使うもの
+        //  第二引数 message: 発話の内容が入っている
+        //  第三引数 command: コマンドの名前が入っている  
         private async Task OnCommandAsync(ConnectorClient connector, Activity message, string command)
         {
+            /**************************************************************
+             * コピペゾーン4: 発話がルールにマッチして、ルールに{command}が書いてあった時に通るゾーン
+             **************************************************************/
+
             if (command == "command1")
             {
                 var reply = message.CreateReply("execute " + command);
                 await connector.Conversations.ReplyToActivityAsync(reply);
             }
         }
+
+
+        /**************************************************************
+         * ここから下は特に気にしなくても大丈夫です
+         **************************************************************/
+
 
         //Bot Connectorからここが呼び出される
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
