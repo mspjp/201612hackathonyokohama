@@ -6,6 +6,7 @@ require('date-utils');
 
 //Botにメッセージがくるとここが呼び出される
 function onMessage(session){
+    
     //rule.csvに書いてあるルールとマッチングを行う
     //マッチしたルールが2つ以上あると最初のルールが選択される
     var responses = [];
@@ -86,8 +87,8 @@ function writeLog(log){
 
 //BotFrameworkを初期化する
 var connector = new builder.ChatConnector({
-    appId: API_KEY.BOT_APIKEY,
-    appPassword: API_KEY.BOT_APISECRET
+    appId: API_KEY.BOT_ID,
+    appPassword: API_KEY.BOT_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
 bot.dialog('/', function (session) {

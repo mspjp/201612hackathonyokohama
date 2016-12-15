@@ -24,7 +24,7 @@ nodejsフォルダの中を使用してください
 Tutorialを見てください
 
 - [csharp](csharp/README.md)
-- [node.js](node.js/README.md)
+- [node.js](nodejs/README.md)
 
 
 ## Mac,Linux
