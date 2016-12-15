@@ -115,6 +115,51 @@ var client = function(apiKey){
         }
       });
     };
+
+/*
+nickname: nickname,
+nickname_y: nickname_y,
+sex: sex,
+bloodtype: bloodtype,
+birthdateY: birthdateY,
+birthdateM: birthdateM,
+birthdateD: birthdateD,
+age: age,
+constellations: constellations,
+place: place,
+*/
+    //対話・しりとり
+    //ドキュメント：https://dev.smt.docomo.ne.jp/?p=docs.api.page&api_name=dialogue&p_name=api_1
+    //sentence : ユーザーの発話(255文字以下)
+    //context : 対話をし区別するためのID　こちらから話しかけるときは空でもOK　対話を続ける場合はコールバックのIDを渡す
+    //user_info : ユーザーの情報を追加する（利用されるかも不明　オプション）
+    //  nickname: ニックネーム
+    //  nickname_y: ニックネームのよみ
+    //  sex: 性別
+    //  bloodtype: 血液型
+    //  birthdateY: 生まれた年
+    //  birthdateM: 誕生月
+    //  birthdateD: 誕生日
+    //  age: 年齢
+    //  constellations: 星座（牡羊座、牡牛座、双子座、蟹座、獅子座、乙女座、天秤座、蠍座、射手座、山羊座、水瓶座、魚座 ）
+    //  place: 現在地 利用可能なのはドキュメントで指定されているもののみです
+    //mode : 動作モード　dialog:対話 strt:しりとり
+    //t : キャラクター 0:デフォルト 20:関西風 30:赤ちゃん風
+    this.dialogue = function (sentence, context, user_info, mode, t, callback) {
+      var result = _api_call(apiKey, Object.assign({
+        utt: sentence,
+        context: context,
+        mode: mode,
+        t: t
+      }, user_info), 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue',
+      function (body){
+        if(body){
+          callback(body.utt, body.yomi, body.context);
+        }else{
+          callback(-1);
+        }
+      });
+    };
 }
 
 module.exports = client;
