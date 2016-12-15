@@ -16,6 +16,7 @@ function showDescription(){
     console.log("要素抽出: 3");
     console.log("文章類似度計算: 4");
     console.log("顔検出: 5");
+    console.log("対話: 6");
     console.log("終了: 999");
     console.log(":");
 }
@@ -70,7 +71,33 @@ process.stdin.on('data', function (data) {
                 console.log('error: '+ JSON.stringify(response));
             }
         });
-
+    }else if(data.indexOf("6")!=-1){
+      docomo.dialogue("おはよう", null, null, "dialog", 0, function(r, y, id){
+        console.log('おはようー対話:%s(%s) ID:%s', r, y, id);
+      });
+      docomo.dialogue("ドキュメントサーバー", null, null, "srtr", 0, function(r, y, id){
+        console.log('しりとり:ドキュメントサーバー>%s(%s) ID:%s', r, y, id);
+        docomo.dialogue("クローラー", id, null, "srtr", 0, function(r2, y2, id){
+          console.log('しりとり:ドキュメントサーバー>%s>クローラー>%s(%s) ID:%s', r, r2, y2, id);
+        }
+      )});
+      docomo.dialogue("お好み焼き", null, null, "dialog", 20, function(r, y, id){
+        console.log('お好み焼きー対話(関西風):%s(%s) ID:%s', r, y, id);
+      });
+      docomo.dialogue("君の名前は？", null, {
+        nickname: "舞黒　太郎",
+        nickname_y: "マイクロ　タロウ",
+        sex: "男",
+        bloodtype: "A",
+        birthdateY: 1996,
+        birthdateM: 1,
+        birthdateD: 31,
+        age: 20,
+        constellations: "水瓶座",
+        place: "東京"
+      }, "dialog", 0, function(r, y, id){
+        console.log('君の名前は？ー対話(ユーザー情報付き):%s(%s) ID:%s', r, y, id);
+      });
     }else{
         console.log("認識していないコマンドです "+data);
     }
