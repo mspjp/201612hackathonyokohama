@@ -54,7 +54,7 @@ namespace SampleBot
                 if(_instance == null)
                 {
                     List<Rule> rules = new List<Rule>();
-                    using (var reader = new StreamReader(HttpContext.Current.Server.MapPath("~/rule.csv")))
+                    using (var reader = new StreamReader(HttpContext.Current.Server.MapPath("~/App_Data/rule.csv")))
                     {
                         string line = "";
                         while ((line = reader.ReadLine()) != null)

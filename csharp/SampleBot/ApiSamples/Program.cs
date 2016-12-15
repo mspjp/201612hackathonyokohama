@@ -3,12 +3,14 @@ using BotLibrary.Docomo;
 using Microsoft.ProjectOxford.Face;
 using Microsoft.ProjectOxford.Face.Contract;
 using Microsoft.ProjectOxford.Emotion;
+using Microsoft.ProjectOxford.Emotion.Contract;
+using Microsoft.ProjectOxford.Vision;
+using Microsoft.ProjectOxford.Vision.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.ProjectOxford.Emotion.Contract;
 
 namespace ApiSamples
 {
@@ -17,6 +19,7 @@ namespace ApiSamples
         private static string _docomoApiKey = ApiKey.DOCOMO_APIKEY;
         private static string _faceApiKey = ApiKey.FACE_APIKEY;
         private static string _emotionKey = ApiKey.EMOTION_APIKEY;
+        private static string _computervisionkey = ApiKey.COMPUTER_VISION_APIKEY;
         static void Main(string[] args)
         {
             while (true)
@@ -30,6 +33,7 @@ namespace ApiSamples
                 Console.WriteLine("顔検出: 5");
                 Console.WriteLine("感情検出: 6");
                 Console.WriteLine("対話: 7");
+                Console.WriteLine("画像分析: 8");
                 Console.WriteLine("終了: 999");
                 Console.Write(":");
                 var command = Console.ReadLine();
@@ -102,6 +106,15 @@ namespace ApiSamples
                         Console.WriteLine("対話API 対話モード-ユーザーの情報を追加したケース-赤ちゃん風(DialogueUserAsync) 開始");
                         var resultDialogue3 = DialogueUserAsync(_docomoApiKey).Result.Result;
                         Console.WriteLine(resultDialogue3);
+                        break;
+                    case "8":
+                        Console.WriteLine("画像分析　開始");
+
+                        var resultComputerVision = ComputerVisionDetectAync(_computervisionkey).Result;
+                        foreach(var tag in resultComputerVision.Tags)
+                        {
+                            Console.WriteLine(tag.Name);
+                        }
                         break;
                     default:
                         Console.WriteLine("そのようなコマンドはありません");
@@ -197,9 +210,9 @@ namespace ApiSamples
             return result;
         }
 
-        private static async Task<Face[]> FaceDetectAsync(string faceApiKey)
+        private static async Task<Microsoft.ProjectOxford.Face.Contract.Face[]> FaceDetectAsync(string faceApiKey)
         {
-            var client = new FaceServiceClient(_faceApiKey);
+            var client = new FaceServiceClient(faceApiKey);
             var url = "http://yukainanakamatati.com/wp-content/uploads/2014/07/a1-e1406013277329.jpg";
             var faces = await client.DetectAsync(url, true, false, new List<FaceAttributeType>()
             {
@@ -215,12 +228,29 @@ namespace ApiSamples
 
         private static async Task<Emotion[]> EmotionDetectAync(string emotionApiKey)
         {
-            var client = new EmotionServiceClient(_emotionKey);
+            var client = new EmotionServiceClient(emotionApiKey);
             var url = "https://github.com/Microsoft/Cognitive-Face-Windows/blob/master/Data/detection2.jpg?raw=true";
             var emotion = await client.RecognizeAsync(url);
 
             return emotion;
 
+        }
+
+        private static async Task<AnalysisResult> ComputerVisionDetectAync(string computerVisionApiKey)
+        {
+            VisionServiceClient client = new VisionServiceClient(computerVisionApiKey);
+            var url = "https://github.com/Microsoft/Cognitive-Face-Windows/blob/master/Data/detection2.jpg?raw=true";
+            var vision = await client.AnalyzeImageAsync(url, new List<VisualFeature>()
+            {
+                VisualFeature.Adult,
+                VisualFeature.Categories,
+                VisualFeature.Color,
+                VisualFeature.Description,
+                VisualFeature.Faces,
+                VisualFeature.ImageType,
+                VisualFeature.Tags
+            });
+            return vision;
         }
     }
 }

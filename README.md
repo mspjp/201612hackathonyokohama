@@ -20,30 +20,12 @@ nodejsフォルダの中を使用してください
 ```
 
 # セットアップ
-公開リポジトリの関係でAPIKEY周りをignoreしているので再生成して、自分のAPIKEYに置き換えてください。
 
-## Windows
-csharpフォルダの中のBotLibraryプロジェクトに以下のC#ファイル```ApiKey.cs```というファイル名で追加してください。
+Tutorialを見てください
 
-```cs
-public static class ApiKey{
-    public static string DOCOMO_APIKEY = "";
-    public static string FACE_APIKEY = "";
-    public static string EMOTION_APIKEY = "";
-}
-```
-上記ファイルのApiKeyを自分のものに置き換えてください
+- [csharp](csharp/README.md)
+- [node.js](node.js/README.md)
 
-csharpフォルダの中のSampleBotプロジェクト内の```Web.config```というファイルを開いて
-```xml
-<appSettings>
-    <!-- update these with your BotId, Microsoft App Id and your Microsoft App Password-->
-    <add key="BotId" value="YourBotId" />
-    <add key="MicrosoftAppId" value="" />
-    <add key="MicrosoftAppPassword" value="" />
-</appSettings>
-```
-上記の部分を自分のBotの情報に置き換えてください。
 
 ## Mac,Linux
 nodejs/SampleBotフォルダ内に以下のjsonファイルを```apikey.json```というファイル名で追加してください。
