@@ -19,6 +19,9 @@ nodejsフォルダの中を使用してください
 /nodejs/SampleBot/apisamples.js -- Bot用のライブラリコピペ用コードとテストコンソールプログラム
 ```
 
+# 事前準備
+[告知ページ](https://mspjp.connpass.com/event/42681/)にある事前準備をしておいてください
+
 # セットアップ
 
 ## gitを使える場合
