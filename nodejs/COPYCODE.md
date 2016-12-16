@@ -6,6 +6,7 @@
 - FaceAPIKeyの変数名: **API_KEY.FACE_APIKEY**
 - EmotionAPIKeyの変数名: **API_KEY.EMOTION_APIKEY**
 - ComputerVisionApiKeyの変数名: **API_KEY.COMPUTER_VISION_APIKEY**
+- BingSearchAPIの変数名: **API_KEY.BING_SEARCH_APIKEY**
 - docomoAPIKeyの変数名: **API_KEY.DOCOMO_APIKEY**
 
 で統一お願いします。
@@ -123,3 +124,15 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 
 ```
 
+## BingSearch API
+
+### Bing検索
+
+機能:
+コピペゾーン:
+
+コピペ用コード
+
+```js
+
+```
