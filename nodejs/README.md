@@ -257,6 +257,7 @@ apikey.jsonファイルの中身を以下のようにします。
     "FACE_APIKEY":"",
     "EMOTION_APIKEY":"",
     "COMPUTER_VISION_APIKEY":"",
+    "BING_SEARCH_APIKEY":"",
     "DOCOMO_APIKEY":""
 }
 ```

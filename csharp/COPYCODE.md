@@ -6,6 +6,7 @@
 - FaceAPIKeyの変数名: **ApiKey.FACE_APIKEY**
 - EmotionAPIKeyの変数名: **ApiKey.EMOTION_APIKEY**
 - ComputerVisionApiKeyの変数名: **ApiKey.COMPUTER_VISION_APIKEY**
+- Bing Search APIKeyの変数名: **ApiKey.BING_SEARCH_APIKEY**
 - docomoAPIKeyの変数名: **ApiKey.DOCOMO_APIKEY**
 
 で統一お願いします。
@@ -114,6 +115,19 @@ var results = await client.ExecAsync(text, info);
 ## Conputer Vision API
 
 ### 物体抽出
+
+機能:
+コピペゾーン:
+
+コピペ用コード
+
+```cs
+
+```
+
+## BingSearch API
+
+### Bing検索
 
 機能:
 コピペゾーン:

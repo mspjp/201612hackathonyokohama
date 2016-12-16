@@ -229,6 +229,7 @@ public static class ApiKey
     public static string FACE_APIKEY = "";
     public static string EMOTION_APIKEY = "";
     public static string COMPUTER_VISION_APIKEY = "";
+    public static string BING_SEARCH_APIKEY = "";
 }
 ```
 
