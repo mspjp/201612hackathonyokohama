@@ -67,7 +67,7 @@ namespace SampleBot
             if (message.Attachments != null && message.Attachments.Count > 0)
             {
                 //アタッチメントのURL
-                var imageUrl = message.Attachments.First().ContentUrl;
+                var image = message.Attachments.First().ContentUrl;
 
                 /**************************************************************
                  * コピペゾーン3: 発話がきて、アタッチメント(画像)が添付されていた時に通るゾーン
@@ -75,7 +75,7 @@ namespace SampleBot
 
                 //Face APIを呼び出す
                 var client = new FaceServiceClient(ApiKey.FACE_APIKEY);
-                var faces = await client.DetectAsync(imageUrl, true, false, new List<FaceAttributeType>()
+                var faces = await client.DetectAsync(image, true, false, new List<FaceAttributeType>()
                 {
                     FaceAttributeType.Age,
                     FaceAttributeType.Smile

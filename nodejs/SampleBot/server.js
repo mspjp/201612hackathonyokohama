@@ -59,7 +59,6 @@ function onMessage(session){
     if(session.message.attachments.length > 0){
         //アタッチメントのURL
         var image = session.message.attachments[0].contentUrl;
-        var image = "http://free-photos-ls01.gatag.net/images/lgf01a201307040400.jpg";
         /******************************************************** 
          * コピペゾーン3: 発話がきて、アタッチメント(画像)が添付されていた時に通るゾーン
         *********************************************************/
