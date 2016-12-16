@@ -67,7 +67,7 @@ namespace SampleBot
             if (message.Attachments != null && message.Attachments.Count > 0)
             {
                 //アタッチメントのURL
-                var imageUrl = message.Attachments.First().ContentUrl;
+                var image = message.Attachments.First().ContentUrl;
 
                 /**************************************************************
                  * コピペゾーン3: 発話がきて、アタッチメント(画像)が添付されていた時に通るゾーン
