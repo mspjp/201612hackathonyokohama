@@ -1,11 +1,17 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 var fs = require('fs');
+//apikey.jsonに書いてあるAPIキーを読み込む
+var API_KEY = JSON.parse(fs.readFileSync('./apikey.json','utf8'));
 var cognitive = require('./cognitive');
 require('date-utils');
+var Docomo = require("./docomoapi.js");
+var docomo = new Docomo(API_KEY.DOCOMO_APIKEY);
+
 
 //Botにメッセージがくるとここが呼び出される
 function onMessage(session){
+    
     //rule.csvに書いてあるルールとマッチングを行う
     //マッチしたルールが2つ以上あると最初のルールが選択される
     var responses = [];
@@ -31,35 +37,59 @@ function onMessage(session){
         }
     }
 
-    //アタッチメント(画像など)が添付されているとこの中が実行される
-    if(session.message.attachments.length > 0){
-        //アタッチメントのURL
-        var imageUrl = session.message.attachments[0].contentUrl;
-        //Face APIを呼び出す
-        cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"smile",function(error,response,body){
-            if (!error && response.statusCode == 200) {
-                console.log(body);
-            } else {
-                console.log('error: '+ JSON.stringify(response));
-            }
-        });
-    }
+    //↑ここまでルールマッチング
+
+    //Botへの発話テキストはこのように取得する
+    var text = session.message.text;
+
+    /******************************************************** 
+     * コピペゾーン1: 発話が来たときに通るゾーン
+    *********************************************************/
 
     //マッチするルールがないなら
     if(responses.length == 0){
+        /******************************************************** 
+         * コピペゾーン2: 用意したルールに何もマッチングしなかった発話が来た時に通るゾーン
+        *********************************************************/
+
         session.send("今日はいい天気ですね");
+    }
+
+    //アタッチメント(画像など)が添付されているとこの中が実行される
+    if(session.message.attachments.length > 0){
+        //アタッチメントのURL
+        var image = session.message.attachments[0].contentUrl;
+        var image = "http://free-photos-ls01.gatag.net/images/lgf01a201307040400.jpg";
+        /******************************************************** 
+         * コピペゾーン3: 発話がきて、アタッチメント(画像)が添付されていた時に通るゾーン
+        *********************************************************/
+
+        //Face APIを呼び出す
+        cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"age",function(error,response,body){
+            if (!error && response.statusCode == 200) {
+                session.send(body[0].faceAttributes.age+'歳');
+            } else {
+                session.send('error: '+ JSON.stringify(response));
+            }
+        });
     }
 }
 
 //ルールに{command}が入っていればここが呼び出される
 function onCommand(session,command){
+    /******************************************************** 
+    * コピペゾーン4: 発話がルールにマッチして、ルールに{command}が書いてあった時に通るゾーン
+    *********************************************************/
+
+
     if(command === "command1"){
         session.send("execute "+command);
     }
 }
 
-//apikey.jsonに書いてあるAPIキーを読み込む
-var API_KEY = JSON.parse(fs.readFileSync('./apikey.json','utf8'));
+//↓ここから下は特に気にしなくても大丈夫です
+
+
 //rule.csvのルールを読み込む
 var rules = [];
 fs.readFileSync('./rule.csv').toString().split('\n').forEach(function (line) {
@@ -86,8 +116,8 @@ function writeLog(log){
 
 //BotFrameworkを初期化する
 var connector = new builder.ChatConnector({
-    appId: API_KEY.BOT_APIKEY,
-    appPassword: API_KEY.BOT_APISECRET
+    appId: API_KEY.BOT_ID,
+    appPassword: API_KEY.BOT_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
 bot.dialog('/', function (session) {

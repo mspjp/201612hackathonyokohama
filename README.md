@@ -24,19 +24,4 @@ nodejsフォルダの中を使用してください
 Tutorialを見てください
 
 - [csharp](csharp/README.md)
-- [node.js](node.js/README.md)
-
-
-## Mac,Linux
-nodejs/SampleBotフォルダ内に以下のjsonファイルを```apikey.json```というファイル名で追加してください。
-
-```json
-{
-    "BOT_APIKEY":"",
-    "BOT_APISECRET":"",
-    "FACE_APIKEY":"",
-    "DOCOMO_APIKEY":""
-}
-```
-
-上記のAPIKeyを自分のものに置き換えてください。
+- [node.js](nodejs/README.md)

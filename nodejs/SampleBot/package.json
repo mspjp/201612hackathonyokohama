@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "　",
   "license": "ISC",
   "dependencies": {
     "botbuilder": "^3.4.4",
     "date-utils": "^1.2.21",
+    "request": "^2.79.0",
     "restify": "^4.3.0"
   }
 }
