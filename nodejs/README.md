@@ -33,7 +33,6 @@ server.jsが左のリストに出ている状態にしてください。
 このプロジェクトに入っているプログラムは下記の用になっています。
 
 - **apikey.json**: WebAPIのAPIキーを入れるファイル
-- **apisamples.js**: apiテスト用のnodejsコンソールプログラム
 - **cognitive.js**: cognitive serviceのnode.jsライブラリ実装
 - **docomoapi.js**: docomoAPIのnode.jsライブラリ実装
 - **index.html**: Botのサーバーにアクセスしたときに表示されるhtml
@@ -55,9 +54,20 @@ VisualStudioCodeのメニューバーから、[表示]>[統合ターミナル]�
 
 では以下のコマンドターミナルに打ち込んで、nodeパッケージを復元します。
 
+pwdコマンドを使用して現在のカレントディレクトリがnodejs/SampleBotにあることを確認します。(もし違う場合はcdで移動してください)
+
 ```sh
-npm install
+bash-3.2$ pwd
+{ダウンロードしたディレクトリ}/201612hackathonyokohama/nodejs/SampleBot
 ```
+
+npm installコマンドでパッケージを復元します。
+
+```sh
+bash-3.2$ npm install
+```
+
+エラーが出なければokです。
 
 ![28](./img/28.png)
 
@@ -172,7 +182,7 @@ Botの新規登録ページが出てきたら下記の情報を入力してく�
 - **Messaging endpoint**:Botを配置したWebAppのURL。
 
 ```
-https://{webappのID}.azurewebsites.net/api/Messages
+https://{webappのID}.azurewebsites.net/api/messages
 
 ```
 
@@ -234,7 +244,22 @@ Botを動かすためには、先ほど取得したBotのIDとpasswordを開発�
 今回はapikey.jsonというファイルにBotのIDとパスワードを入れると、自動で読み込むようなプログラムを作っておきました。
 なので、apikey.jsonを編集すればIDとパスワードを読み込むことができます。
 
-apikey.jsonを開き、**BOT_ID**には先程メモしたBotのMicrosoft App IDを、**BOT_PASSWORD**には先程メモしたBotのMicrosoft App Passwordを入れてください。
+apikey.jsonというファイルはまだないのでnodejs/SampleBotのフォルダの以下に**apikey.json**ファイルを新規作成します。
+
+![38](./img/38.png)
+
+apikey.jsonファイルの中身を以下のようにします。
+
+```json
+{
+    "BOT_APIKEY":"",
+    "BOT_APISECRET":"",
+    "FACE_APIKEY":"",
+    "DOCOMO_APIKEY":""
+}
+```
+
+**BOT_ID**には先程メモしたBotのMicrosoft App IDを、**BOT_PASSWORD**には先程メモしたBotのMicrosoft App Passwordを入れてください。
 
 ![19](./img/19.png)
 
@@ -244,6 +269,7 @@ apikey.jsonを開き、**BOT_ID**には先程メモしたBotのMicrosoft App ID�
 ダウンロードしたSampleBotプロジェクトは、今回ハッカソンで使用する各種WebAPIのAPIKeyが入っていないため、ビルド(プログラムを実行ファイルにすること)ができません。
 
 そこでまずはWebAPIのApiKeyを入力しましょう。
+
 その他のWebAPIKeyも、先程と同じapikey.jsonファイルに書き込みます
 
 各種APIKeyはスタッフから指示があるまでお待ちください。
@@ -317,6 +343,8 @@ This is the bot pageと表示されたページが表示されればOKです。
 
 このようにDropboxにファイルを入れて、ボタン1つでWebアプリをサーバーに配置する機能がWebAppにはあります。
 
+もし、Botのプログラムを変更した場合、もう一度上記の操作を行って配置をし直す必要があります。
+
 ### 2.7 Botと対話してみる
 **学習価値のある一般技術知識**
 
@@ -333,6 +361,322 @@ This is the bot pageと表示されたページが表示されればOKです。
 
 ![37](./img/37.png)
 
+[Test]ボタンを押しみましょう。Acceptedと表示されたらテストOKです。Botサーバーと正しくつながっています。
+Acceptedと表示されない場合は今までの手順に不具合があるのでスタッフをよんでください。
+
+![39](./img/39.png)
+
+下にスクロールしていくと、チャットのテストをすることができます。
+テキトーに入力して反応を見ましょう。
+**こんにちは**と入力すると違った反応が見えると思います。
+
+![39_2](./img/39_2.png)
+
+### 2.8 Slackと連携する
+**学習価値のある一般技術知識**
+
+Botの準備はできたのでメッセンジャーアプリと連携してみましょう。
+今回はいろんな都合により、slackを使いたいと思います。
+
+slackのアカウントを持っていない人は、[https://slack.com/create](https://slack.com/create)にアクセスし、アカウントを新規作成してください。
+基本的にはサイトに沿ってアカウントを作ることができるとは思いますがわからない場合はスタッフに声をかけてください。
+
+slackのアカウントを作成することができたら、作成したBotのページにアクセスします。
+
+下の方にスクロールすると、Slackのアイコンがあるので**Add**というところを押します。
+
+![40](./img/40.png)
+
+slackの設定ページが表示されます。
+
+最初の**Login to Slack～**をクリックして展開し、中にあるリンクをクリックします。
+
+![41](./img/41.png)
+
+右上の**Create New App**ボタンをクリックします。
+
+![42](./img/42.png)
+
+App Nameには英語で好きな名前を指定してください。Slack BotのIDになります。
+Development Slack TeamはデフォルトのままでOKです。
+
+**Create App**ボタンをクリックします。
+
+![43](./img/43.png)
+
+左のリストから、**OAth&Permissions**を選択し、**Redirect URL(s)**のところに、以下のURLを入力します。
+
+```
+https://slack.botframework.com
+```
+
+入力できたら、**Save Changes**ボタンを押します。
+
+![44](./img/44.png)
+
+左側のリストから、**Bot Users**をクリックし、**Add a Bot User**ボタンを押します。
+
+![45](./img/45.png)
+
+**Add Bot User**ボタンをクリックします。
+
+![46](./img/46.png)
+
+左側のリストから、**Basic Information**をクリックします。
+
+表示された**Client ID**と**Client Secret(Showボタンを押したもの)**をどこかにメモしておいてください。
+
+![47](./img/47.png)
+
+先ほどのBotとSlackの連携設定ページに戻り、**Submit your Credentials**を展開し、**Client Id**と**Client Secret**に先ほどコピーしたものを貼り付けます。
+
+**Submit Slack Credentials**ボタンを押します。
+
+![48](./img/48.png)
+
+**Autholize**をクリックします。
+
+![49](./img/49.png)
+
+**Credentials have been validated**と表示されればOKです。
+
+**I'm done configuring Slack**ボタンを押します。
+
+![50](./img/50.png)
+
+以上でslackとBot Frameworkの連携が完了しました。
+
+Slackを開くと、設定したBotがDirect Messageのところにいるので話すと、同じように会話することができます。
+
+![51](./img/51.png)
+
+Slackはスマホアプリもあり、アプリをいれると、スマートフォンからも会話することができます。
+
+## 3. Botの拡張
+### 3.1 ローカルで開発をする
+**ハッカソンでしか使えない技術知識**
+
+先ほどまでで、BotのプログラムをWebサーバーに配置してBotと対話することができました。
+
+しかし、Botのプログラムを変更するたびに、毎回Webサーバーに配置して確認->またプログラム変更みたいなことをしていると非常に効率が悪いです。
+
+そこでBotFrameworkではエミュレーターを使用してWebサーバーに配置しなくても、Botがどういう応答をするのかを確認しながら開発することができます。
+
+[BotFramework Emulator](https://docs.botframework.com/en-us/tools/bot-framework-emulator/)にアクセスします。
+
+Get it hereのhereにあるリンクをクリックします。
+
+botframework-emulatorというアプリケーションがダウンロードできるのでMacの**アプリケーション**フォルダに移動します。
+
+![52](./img/52.png)
+
+あとはMacのLaunchPadから見ると、エミュレーターが見えるので起動します。
+
+![53](./img/53.png)
+
+URLの欄には
+
+```
+http://localhost:3978/api/messages
+```
+
+と入力し、MicrosoftAppIDとMicrosoftAppPasswordはそれぞれapikey.jsonに書いたBOT_TDとBOT_PASSWORDを入力します。
+
+入力できたら[OK]をおします。
+
+![54](./img/54.png)
+
+ローカルでBotのサーバーを起動するにはVisualStudioCodeのデバッグタブを開きます。(下図を参照)
+
+デバッグタブを開いたら、**構成がありません**と上の方に表示されているので設定のアイコンをおします。(下図参照)
+
+![55](./img/55.png)
+
+いくつか選択肢がでるので、**Node.js**を選択します。
+
+![56](./img/56.png)
+
+選択すると、**launch.json**というファイルがエディタで表示されます。
+これがVSCodeでデバッグの設定をするためのものです。
+
+気をつけることとしては、**program:**の項目の値が**"${workspaceRoot}/server.js"**になっているか注意してください。もし**"${workspaceRoot}/app.js"**になっている場合は**app.js**の部分を**server.js**に置き換えてください。
+
+![57](./img/57.png)
+
+ここまでできたら、F5キーか、**緑の三角形**を押します。
+
+![58](./img/58.png)
+
+すると、このような画面になります。この状態で、ローカルの3978番ポートにnode.jsのサーバーを立ち上げることができました。
+
+![59](./img/59.png)
+
+ではエミュレーターから発話をしてみましょう。
+Botから応答が返ってくれば成功です。
+
+![60](./img/60.png)
+
+Botのサーバーを停止するには**赤い■ボタン**を押します。
+
+![61](./img/61.png)
+
+これで、Webサーバーに配置せずとも、ローカルでBotの開発ができるようになりました。
+
+実際にBotをslackなどと対話させたい場合は、もう一度前の手順をつかってWebAppに配置しましょう。
+
+### 3.2 ルールファイルを編集して応答ルールを変える
+**ハッカソンでしか使えない技術知識**
+
+今回スタッフが作成したSampleBotは、プログラムがかけなくても応答パターンを変更できるように、Botの応答ルールをcsvファイルとして記述することができます。
+
+nodejs/SampleBotフォルダの中にある**rule.csv**ファイルを開きます。
+
+![62](./img/62.png)
+
+今回作成したcsvは下図のようなルールになっています。
+
+ルールは
+
+```
+ルール(正規表現),応答発話
+```
+という風にcsvを記述していきます。
+
+![63](./img/63.png)
+
+Botに発話が入力されると、左側に書いた正規表現のルールを検索し、マッチしたルールの右側にある応答文をBotが返してくれます。
+
+例えば**おやすみ**というワードが発話に入っている時、**いやすみなさいませ**と応答させるなら、以下のようなルールを追加します。
+
+```
+.*おやすみ.*,おやすみなさいませ
+```
+発話中に**hoge**が入っているというルールは正規表現で以下のように書くことができます。
+```
+.*hoge.*
+```
+
+![64](./img/64.png)
+
+csvを変更したら、プログラムを実行してエミュレーターから**おやすみ**と入力してみましょう。
+
+![65](./img/65.png)
+
+応答ルールを変えることができました。
+
+あまりプログラムに自身がない人はこのcsvファイルを編集して、オリジナルな応答を行うBotを作りましょう。
+
+### 3.3 プログラムで応答を変える
+**ハッカソンでしか使えない技術知識**
+
+応答ルールをcsvで記述するだけでなく、node.jsのプログラムを編集して応答ルールを変更することもできます。
+
+**server.js**ファイルを開きます。
+
+Botにメッセージが来ると、このファイルの中のOnMessage関数が呼び出されます。
+
+![66](./img/66.png)
+
+onMessage関数はsessionという引数を持っています。
+このsessionにはBotに送られてきたメッセージの情報が入っています。
+
+Botに送られてきたメッセージを取得するには以下の文を記述します。
+
+```js
+var text = session.message.text;
+```
+
+また、Botからメッセージを応答させたい場合は以下の文を記述します。
+
+```js
+var text = "今日はいい天気ですね";
+session.send(text);
+```
+
+### 3.4 応答ルールファイルとプログラムを連携させる
+**ハッカソンでしか使えない技術知識**
+
+SampleBotでは、先ほど記述した応答ルールのcsvとnode.jsのプログラムを連携させることができます。
+
+以下のように、応答に
+
+```
+{command1}
+```
+のように{　　}でくくったような応答を書くと、
+
+![67](./img/67.png)
+
+**server.js**ファイルの**onCommand**関数に{ }内の文字列が渡され、呼び出されます。(今回の場合はcommand1)
+
+![68](./img/68.png)
+
+このように正規表現で記述した条件にマッチした場合、node.jsのプログラムでAPIを利用したりなどができます。
+
+![69](./img/69.png)
+
+### 3.5 発話データを外部APIと連携する
+**ハッカソンでしか使えない技術知識**
+
+今回、よりすごい機能を簡単に実装できるように、コピーアンドペースト用のサンプルコード集を作りました。
+サンプルコード集は[COPYCODE.md](./COPYCODE.md)にあります。
+
+この中で、発話のテキストデータを解析するAPIを使用してみましょう。
+
+例えば、docomoのAPIの場合、漢字をひらがなに変換することができます。
+コピペ用コードはこのようになっていますが、下のコードの意味としては、hiragana関数の第一引数に入った文字列を、ひらがなに変換することができるコードです。
+
+```js
+//コピペゾーン1にコピペする
+var text = 'あらゆる現実をすべて自分の方に捻じ曲げたのだ';
+var result = '';
+docomo.hiragana(text, 'hiragana', function(r){
+    result = r;
+});
+```
+コピペ用コードには説明のところに**コピペゾーン**が指定されています。コピペゾーンとはソースコードにコメントとして書いてあるコピペゾーンのことです。
+
+![70](./img/70.png)
+
+今回はコピペゾーン1が指定されているのでコピペゾーン1の下にコピペしましょう。
+今回の場合、resultには発話がひらがなに変換された文字列が入っています。
+
+このように、サンプルコード集は[COPYCODE.md](./COPYCODE.md)を見て、指定されたところにコピペするだけで、Botの機能を拡張することができます。
+
+### 3.6 画像データを外部APIと連携する
+**ハッカソンでしか使えない技術知識**
+
+今回のBotは、添付された画像データも利用することができます。
+例えばサンプルコード集[COPYCODE.md](./COPYCODE.md)にある、Cognitive ServiceのFace APIを用いると添付された画像にうつった顔が何歳か判定することができます。
+
+画像データの場合、**コピペゾーン3**に主にコピペすることになります。
+
+![71](./img/71.png)
+
+今回はすでに以下のようなプログラムが書かれていると思います。
+
+```js
+//Face APIを呼び出す
+cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"age",function(error,response,body){
+    if (!error && response.statusCode == 200) {
+        session.send(body[0].faceAttributes.age+'歳');
+    } else {
+        session.send('error: '+ JSON.stringify(response));
+    }
+});
+```
+
+このプログラムは添付ファイルのURLを取得し、顔が写っているなら何歳か判定するプログラムとなっています。
+
+![72](./img/72.png)
+
+**重要1:画像ファイルの使用はslackかWebChatでしか使用できません**
+
+つまりエミュレータでのローカルデバッグでは画像の取得はできないということを注意してください。
+
+**重要2:同じファイル名の画像ファイルは2回連続で添付できません**
+
+ファイル名を変えるか、画像を変えて添付しましょう。
 
 
 ## 4. おわりに
