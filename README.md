@@ -45,4 +45,9 @@ Tutorialを見てください
 ## MacかLinuxを使う人
 - [node.js](nodejs/README.md)
 
+# トラブルシューティング
+## Windowsを使う人
+- [csharp](csharp/DEBUG.md)
 
+## MacかLinuxを使う人
+- [node.js](nodejs/DEBUG.md)
