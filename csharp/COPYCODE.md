@@ -16,6 +16,7 @@
 ### 形態素解析
 
 機能:文章を意味のあるまとまり(形態素)に分割する
+
 コピペゾーン:コピペゾーン1
 
 コピペ用コード
@@ -33,6 +34,7 @@ var results = await client.ExecAsync(text, info);
 ### 漢字ひらがな変換
 
 機能:漢字の入っている文章をひらがなに変換する
+
 コピペゾーン:コピペゾーン1
 
 コピペ用コード
@@ -50,6 +52,7 @@ var result = await client.ExecAsync(text, mode);
 ### 要素抽出
 
 機能:文章の中から、人名、地名、日付などの要素を抽出する
+
 コピペゾーン:コピペゾーン1
 
 コピペ用コード
@@ -66,6 +69,7 @@ var result = await client.ExecAsync(text, filter);
 ### 文章類似度計算
 
 機能:2つの文章間の類似度(どれぐらい似ているか)を算出する
+
 コピペゾーン:コピペゾーン1
 
 コピペ用コード
@@ -81,6 +85,7 @@ var result = await client.ExecAsync(text1, text2);
 ### 雑談対話
 
 機能:発話を入れると、それっぽい雑談の発話を返してくれる
+
 コピペゾーン:コピペゾーン1
 
 コピペ用コード
@@ -98,6 +103,7 @@ var result = await client.ExecAsync(text);
 ### 顔検出
 
 機能:顔画像から写っている顔のパーツの位置、何歳ぐらいか、性別などを抽出する
+
 コピペゾーン:コピペゾーン2
 
 コピペ用コード
@@ -125,6 +131,7 @@ var faces = await client.DetectAsync(image, true, false, new List<FaceAttributeT
 ### 感情抽出
 
 機能:顔画像から写っている顔の感情を判定する
+
 コピペゾーン:コピペゾーン2
 
 コピペ用コード
@@ -143,6 +150,7 @@ var emotion = await client.RecognizeAsync(image);
 ### 物体抽出
 
 機能:風景画像から、何が写っているかを抽出する
+
 コピペゾーン:コピペゾーン2
 
 コピペ用コード
@@ -170,11 +178,15 @@ var vision = await client.AnalyzeImageAsync(image, new List<VisualFeature>()
 ### Bing検索
 
 機能:Bingで検索を行う
+
 コピペゾーン:コピペゾーン1
 
 コピペ用コード
 
 ```cs
+//text変数にBotからの発話を入れておく
+var client = new WebSearch(ApiKey.BING_SEARCH_APIKEY);
+var webResult = await client.ExecuteAsync(text,10);
 
 ```
 
