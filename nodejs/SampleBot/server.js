@@ -128,8 +128,11 @@ bot.dialog('/', function (session) {
 });
 
 bot.dialog('/message',function(session){
-    onMessage(session);
+    if(session.message.type ==='message'){
+        onMessage(session);
+    }
     session.endDialog();
+    
 });
 
 var server = restify.createServer();

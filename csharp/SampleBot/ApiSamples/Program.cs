@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
+using BotLibrary.Bing;
 
 namespace ApiSamples
 {
@@ -34,6 +36,7 @@ namespace ApiSamples
                 Console.WriteLine("感情検出: 6");
                 Console.WriteLine("対話: 7");
                 Console.WriteLine("画像分析: 8");
+                Console.WriteLine("Bing検索: 9");
                 Console.WriteLine("終了: 999");
                 Console.Write(":");
                 var command = Console.ReadLine();
@@ -116,6 +119,11 @@ namespace ApiSamples
                             Console.WriteLine(tag.Name);
                         }
                         break;
+                    case "9":
+                        var client = new WebSearch(ApiKey.BING_SEARCH_APIKEY);
+                        var webResult = client.ExecuteAsync("アンパン",20).Result;
+                        
+                        break;
                     default:
                         Console.WriteLine("そのようなコマンドはありません");
                         break;
@@ -125,6 +133,7 @@ namespace ApiSamples
                 Console.WriteLine();
             }
         }
+        
 
         private static async Task<List<List<Morph.MorphResultSet>>> MorphAnalysisAsync(string docomoApiKey)
         {

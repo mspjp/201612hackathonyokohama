@@ -22,9 +22,8 @@
 
 ```js
 //text変数にBotからの発話を入れておく
-var result = "";    //形態素解析結果が入る
 docomo.morph(text, 'form|pos|read', '', function(r){
-    result = r;
+    console.log(r);
 });
 ```
 
@@ -36,7 +35,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
-
+docomo.hiragana(text, 'hiragana', function(r){
+    console.log(r);
+});
 ```
 
 ### 要素抽出
@@ -47,6 +48,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
+docomo.entity(text, 'DAT', function(r){
+    console.log(r);
+});
 
 ```
 
@@ -58,6 +62,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
+docomo.similarity(text1,text2, function(s){
+    console.log(s);
+});
 
 ```
 
@@ -69,7 +76,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
-
+docomo.dialogue(text, null, null, "dialog", 0, function(r, y, id){
+    console.log(r);
+});
 ```
 
 
@@ -84,7 +93,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
-
+cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"smile,age",function(err,res,body){
+    console.log(body);
+});
 ```
 
 
@@ -98,7 +109,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
-
+cognitive.emotion(API_KEY.EMOTION_APIKEY,image,function(err,res,body){
+    console.log(body);
+});
 ```
 
 
@@ -112,6 +125,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
+cognitive.computerVision(API_KEY.COMPUTER_VISION_APIKEY,image,function(err,res,body){
+    console.log(body);
+});
 
 ```
 
@@ -125,5 +141,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
+var query = "病院";
+cognitive.bingSearch(API_KEY.BING_SEARCH_APIKEY,query,10,0,function(err,res,body){
+    console.log(body);
+});
 
 ```
