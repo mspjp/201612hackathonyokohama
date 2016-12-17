@@ -100,10 +100,11 @@ process.stdin.on('data', function (data) {
         console.log('君の名前は？ー対話(ユーザー情報付き):%s(%s) ID:%s', r, y, id);
       });
     }else if(data.indexOf("7")!=-1){
-      var query = "病院";
-      cognitive.bingSearch(API_KEY.BING_SEARCH_APIKEY,query,10,0,function(e,r,b){
-        console.log(b.webPages.value[0].name);
+      var image = "https://news.biglobe.ne.jp/entertainment/1012/1226676402/1623161_thum630.jpg";
+      cognitive.computerVision(API_KEY.COMPUTER_VISION_APIKEY,image,function(err,res,body){
+        console.log(body);
       });
+      
     }else{
         console.log("認識していないコマンドです "+data);
     }
