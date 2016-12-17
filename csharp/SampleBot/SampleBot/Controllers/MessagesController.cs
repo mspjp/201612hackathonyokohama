@@ -125,7 +125,10 @@ namespace SampleBot
             ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
             try
             {
-                await OnMessageAsync(connector, activity);
+                if (activity.Type == "message")
+                {
+                    await OnMessageAsync(connector, activity);
+                }
             }catch(Exception e)
             {
                 //何かエラーが発生するとログに記録してエラー文を出す
