@@ -30,7 +30,7 @@ namespace SampleBot
         {
             //rule.csvに書いてあるルールとマッチングを行う
             //マッチしたルールが2つ以上あると最初のルールが選択される
-            var responses = RuleManager.Instance.SearchResponses(message.Text);
+            var responses = RuleManager.Instance.SearchResponses(message.Text??"");
             foreach(var res in responses)
             {
                 if (res.Contains("{") && res.Contains("}"))
@@ -46,7 +46,7 @@ namespace SampleBot
             }
 
             //発話のテキスト
-            var text = message.Text;
+            var text = message.Tex??"";
 
             /**************************************************************
              * コピペゾーン1: 発話が来たときに通るゾーン
