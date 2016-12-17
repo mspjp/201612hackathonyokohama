@@ -13,6 +13,19 @@ function post(apiKey,endpoint,body,callBack){
 
     return request.post(options,callBack);
 }
+
+function get(apiKey,endpoint,callBack){
+    var options = {
+        uri: endpoint,
+        headers:{
+            'Ocp-Apim-Subscription-Key':apiKey,
+            'Content-Type':'application/json'
+        },
+        json: true
+    };
+
+    return request.get(options,callBack);
+}
     
 
 module.exports = {
@@ -33,5 +46,16 @@ module.exports = {
             "url":url
         };
         post(apiKey,endpoint,body,callBack);
+    },
+
+    bingSearch : function(apiKey,query,count,offset,callBack){
+        var endpoint = "https://api.cognitive.microsoft.com/bing/v5.0/search";
+        endpoint += "?q="+encodeURIComponent(query);
+        endpoint += "&count="+count;
+        endpoint += "&offset="+offset;
+        endpoint += "&mkt=ja-jp";
+        endpoint += "&safesearch=Moderate";
+
+        get(apiKey,endpoint,callBack);
     }
 };

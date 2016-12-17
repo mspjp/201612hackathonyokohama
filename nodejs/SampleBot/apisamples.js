@@ -17,6 +17,7 @@ function showDescription(){
     console.log("文章類似度計算: 4");
     console.log("顔検出: 5");
     console.log("対話: 6");
+    console.log("検索: 7");
     console.log("終了: 999");
     console.log(":");
 }
@@ -97,6 +98,11 @@ process.stdin.on('data', function (data) {
         place: "東京"
       }, "dialog", 0, function(r, y, id){
         console.log('君の名前は？ー対話(ユーザー情報付き):%s(%s) ID:%s', r, y, id);
+      });
+    }else if(data.indexOf("7")!=-1){
+      var query = "病院";
+      cognitive.bingSearch(API_KEY.BING_SEARCH_APIKEY,query,10,0,function(e,r,b){
+        console.log(b.webPages.value[0].name);
       });
     }else{
         console.log("認識していないコマンドです "+data);
