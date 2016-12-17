@@ -46,7 +46,7 @@ namespace SampleBot
             }
 
             //発話のテキスト
-            var text = message.Text;
+            var text = message.Tex??"";
 
             /**************************************************************
              * コピペゾーン1: 発話が来たときに通るゾーン
