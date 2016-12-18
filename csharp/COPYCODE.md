@@ -120,7 +120,7 @@ var result = await client.ExecAsync(text);
 
 機能:顔画像から写っている顔のパーツの位置、何歳ぐらいか、性別などを抽出する
 
-コピペゾーン:コピペゾーン2
+コピペゾーン:コピペゾーン3
 
 コピペ用コード
 
@@ -148,7 +148,7 @@ var faces = await client.DetectAsync(image, true, false, new List<FaceAttributeT
 
 機能:顔画像から写っている顔の感情を判定する
 
-コピペゾーン:コピペゾーン2
+コピペゾーン:コピペゾーン3
 
 コピペ用コード
 
@@ -167,7 +167,7 @@ var emotion = await client.RecognizeAsync(image);
 
 機能:風景画像から、何が写っているかを抽出する
 
-コピペゾーン:コピペゾーン2
+コピペゾーン:コピペゾーン3
 
 コピペ用コード
 
