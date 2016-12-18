@@ -71,6 +71,22 @@ namespace SampleBot
                  * コピペゾーン3: 発話がきて、アタッチメント(画像)が添付されていた時に通るゾーン
                  **************************************************************/
 
+                //Face APIを呼び出す
+                var client = new FaceServiceClient(ApiKey.FACE_APIKEY);
+                var faces = await client.DetectAsync(image, true, false, new List<FaceAttributeType>()
+                {
+                    FaceAttributeType.Age,
+                    FaceAttributeType.Smile
+                });
+
+                if (faces.Count() == 0)
+                {
+                    await ReplyMessageAsync(connector,message,"顔が検出できませんでした");
+                }
+                else
+                {
+                    await ReplyMessageAsync(connector, message, "素敵なお顔ですね！ " + faces.First().FaceAttributes.Age + "歳ですか？");
+                }
             }
 
             
