@@ -444,14 +444,14 @@ localhost:3979
 
 Bot Framework Emulator上のEnter your endpoint URLと書かれている部分にBotのアドレスとポート番号＋api/messagesを入力します。
 
-![57](./img/57-1.png)
+![57](./img/57-1.PNG)
 
 続けて表示されたテキストボックスの各項目を埋めます。
 
 - **Microsoft App Id** :自分のBotのApp Id
 - **Microsoft App Password** :自分のBotのApp Password
 
-![57](./img/57-2.png)
+![57](./img/57-2.PNG)
 
 内容を確認してConnectボタンを押します。
 
