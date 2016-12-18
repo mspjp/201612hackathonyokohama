@@ -530,9 +530,7 @@ var text = message.Text;
 また、Botからメッセージを応答させたい場合は以下の文を記述します。
 
 ```cs
-var text = "応答です";
-var reply1 = message.CreateReply(text);
-await connector.Conversations.ReplyToActivityAsync(reply1);
+await ReplyMessageAsync(connector, message,"応答分です");
 ```
 
 ### 3.4 応答ルールファイルとプログラムを連携させる
