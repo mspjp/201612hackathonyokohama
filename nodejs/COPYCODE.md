@@ -125,7 +125,7 @@ docomo.dialogue(text, null, null, "dialog", 0, function(r, y, id){
 
 機能:顔画像から写っている顔のパーツの位置、何歳ぐらいか、性別などを抽出する
 
-コピペゾーン:コピペゾーン2
+コピペゾーン:コピペゾーン3
 
 
 コピペ用コード
@@ -144,7 +144,7 @@ cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"smile,age",function(er
 
 機能:顔画像から写っている顔の感情を判定する
 
-コピペゾーン:コピペゾーン2
+コピペゾーン:コピペゾーン3
 
 コピペ用コード
 
@@ -162,7 +162,7 @@ cognitive.emotion(API_KEY.EMOTION_APIKEY,image,function(err,res,body){
 
 機能:風景画像から、何が写っているかを抽出する
 
-コピペゾーン:コピペゾーン2
+コピペゾーン:コピペゾーン3
 
 コピペ用コード
 
