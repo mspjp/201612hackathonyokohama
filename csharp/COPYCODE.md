@@ -11,6 +11,22 @@
 
 で統一お願いします。
 
+## Bot発話文取得
+
+コピペゾーン: ゾーン1～4
+
+```cs
+var text = message.Text;
+```
+
+## Botに発話させる
+
+コピペゾーン: ゾーン1～4
+
+```cs
+await ReplyMessageAsync(connector, message, "こんにちは");
+```
+
 ## Docomo API
 
 ### 形態素解析
