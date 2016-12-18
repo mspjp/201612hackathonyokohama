@@ -1,6 +1,6 @@
 # Bot作成(node.js編)チュートリアル
 ## 1. 注意事項
-このチュートリアルを行うには以下の環境がひつようになります。
+このチュートリアルを行うには以下の環境が必要になります。
 - MacOSX or Linux PC
 - node.js環境、npm環境
 - VisualStudioCode(node.jsが開発できる環境ならなんでもいいですがオススメ)
@@ -32,7 +32,7 @@ server.jsが左のリストに出ている状態にしてください。
 
 このプロジェクトに入っているプログラムは下記の用になっています。
 
-- **apikey.json**: WebAPIのAPIキーを入れるファイル
+- **apikey.json**: WebAPIのAPIキーを入れるファイル(後で作成するので今は存在しません)
 - **cognitive.js**: cognitive serviceのnode.jsライブラリ実装
 - **docomoapi.js**: docomoAPIのnode.jsライブラリ実装
 - **index.html**: Botのサーバーにアクセスしたときに表示されるhtml
