@@ -530,9 +530,7 @@ var text = message.Text;
 また、Botからメッセージを応答させたい場合は以下の文を記述します。
 
 ```cs
-var text = "応答です";
-var reply1 = message.CreateReply(text);
-await connector.Conversations.ReplyToActivityAsync(reply1);
+await ReplyMessageAsync(connector, message,"応答分です");
 ```
 
 ### 3.4 応答ルールファイルとプログラムを連携させる
@@ -644,6 +642,14 @@ else
 
 **重要2:同じファイル名の画像ファイルは2回連続で添付できません**
 
+### 3.7 練習
+**ハッカソンでしか使えない技術知識**
+
+サンプルコード集[COPYCODE.md](./COPYCODE.md)には様々な機能がコピペできる状態で存在しています。
+
+**今現在、Botに添付ファイルが来ると年齢認識するプログラムが書かれていますが、年齢認識ではなく、感情判定できるBotを作ってみてください**
+
+機能の実装練習なので、わからなければ即座に手を挙げて、スタッフを呼んでください
 
 ## 4. おわりに
 お疲れ様でした。チュートリアルは以上となります。

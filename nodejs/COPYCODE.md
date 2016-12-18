@@ -11,6 +11,22 @@
 
 で統一お願いします。
 
+## Bot発話文取得
+
+コピペゾーン: ゾーン1～4
+
+```js
+var text = session.message.text;
+```
+
+## Botに発話させる
+
+コピペゾーン: ゾーン1～4
+
+```js
+session.send("こんにちは！");
+```
+
 ## Docomo API
 
 ### 形態素解析

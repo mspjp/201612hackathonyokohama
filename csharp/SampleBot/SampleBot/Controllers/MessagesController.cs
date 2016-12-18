@@ -58,9 +58,7 @@ namespace SampleBot
                 /**************************************************************
                  * コピペゾーン2: 用意したルールに何もマッチングしなかった発話が来た時に通るゾーン
                  **************************************************************/
-
-                var reply = message.CreateReply("今日はいい天気ですね！");
-                await connector.Conversations.ReplyToActivityAsync(reply);
+                await ReplyMessageAsync(connector, message, "今日はいい天気ですね!");
             }
 
             //アタッチメント(画像など)が添付されているとこの中が実行される
@@ -83,13 +81,11 @@ namespace SampleBot
 
                 if (faces.Count() == 0)
                 {
-                    var reply = message.CreateReply("顔が検出できませんでした");
-                    await connector.Conversations.ReplyToActivityAsync(reply);
+                    await ReplyMessageAsync(connector,message,"顔が検出できませんでした");
                 }
                 else
                 {
-                    var reply = message.CreateReply("素敵なお顔ですね！ " + faces.First().FaceAttributes.Age + "歳ですか？");
-                    await connector.Conversations.ReplyToActivityAsync(reply);
+                    await ReplyMessageAsync(connector, message, "素敵なお顔ですね！ " + faces.First().FaceAttributes.Age + "歳ですか？");
                 }
             }
 
@@ -108,8 +104,7 @@ namespace SampleBot
 
             if (command == "command1")
             {
-                var reply = message.CreateReply("execute " + command);
-                await connector.Conversations.ReplyToActivityAsync(reply);
+                await ReplyMessageAsync(connector, message, "execute " + command);
             }
         }
 
@@ -146,6 +141,13 @@ namespace SampleBot
             var message = Request.CreateResponse(HttpStatusCode.OK);
             message.Content = new StringContent(viewStr);
             return message;
+        }
+
+        private async Task ReplyMessageAsync(ConnectorClient connector,Activity activity,string message)
+        {
+            var reply = activity.CreateReply(message);
+            await connector.Conversations.ReplyToActivityAsync(reply);
+
         }
 
         private static List<string> _logList = new List<string>();
