@@ -40,6 +40,9 @@ session.send("こんにちは！");
 ```js
 //text変数にBotからの発話を入れておく
 docomo.morph(text, 'form|pos|read', '', function(r){
+    // 解析結果がrに格納される
+    // 形式は[1文ごと[1要素ごと[形態素フィルタで指定した要素（順番は表記、形態素、読みの順のようです）]]])
+    // 例 [ [["走","動詞語幹", "ハシ"],["猫","名詞", "ネコ"]] , [["追","動詞語幹", "オウ"],["人","名詞", "ヒト"]] ]
     console.log(r);
 });
 ```
@@ -53,7 +56,9 @@ docomo.morph(text, 'form|pos|read', '', function(r){
 コピペ用コード
 
 ```js
+//text変数にBotからの発話を入れておく
 docomo.hiragana(text, 'hiragana', function(r){
+    // 変換結果の文字列が格納される(ひらがなモードなのでひらがな)
     console.log(r);
 });
 ```
@@ -67,7 +72,12 @@ docomo.hiragana(text, 'hiragana', function(r){
 コピペ用コード
 
 ```js
+//text変数にBotからの発話を入れておく
+//DATは日付だけを抽出することを示す
 docomo.entity(text, 'DAT', function(r){
+    //抽出結果
+    // 形式:[[固有表現, 固有表現の種類]] 
+    // 例:[[10月10日, DAT], [12月, DAT]]
     console.log(r);
 });
 
@@ -82,7 +92,9 @@ docomo.entity(text, 'DAT', function(r){
 コピペ用コード
 
 ```js
+//text1, 2変数にBotからの発話などを入れておく
 docomo.similarity(text1,text2, function(s){
+    //類似度(0~1.0)
     console.log(s);
 });
 
@@ -97,7 +109,11 @@ docomo.similarity(text1,text2, function(s){
 コピペ用コード
 
 ```js
+//text変数にBotからの発話を入れておく
 docomo.dialogue(text, null, null, "dialog", 0, function(r, y, id){
+    //APIからの応答
+    //r:応答
+    //y:読み
     console.log(r);
 });
 ```
@@ -115,6 +131,7 @@ docomo.dialogue(text, null, null, "dialog", 0, function(r, y, id){
 コピペ用コード
 
 ```js
+//image変数に顔画像のURLを入れておく
 cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"smile,age",function(err,res,body){
     console.log(body);
 });
@@ -132,6 +149,7 @@ cognitive.faceDetect(API_KEY.FACE_APIKEY,image,true,true,"smile,age",function(er
 コピペ用コード
 
 ```js
+//image変数に顔画像のURLを入れておく
 cognitive.emotion(API_KEY.EMOTION_APIKEY,image,function(err,res,body){
     console.log(body);
 });
@@ -149,6 +167,7 @@ cognitive.emotion(API_KEY.EMOTION_APIKEY,image,function(err,res,body){
 コピペ用コード
 
 ```js
+//imageに風景画像のURLを入れておく
 cognitive.computerVision(API_KEY.COMPUTER_VISION_APIKEY,image,function(err,res,body){
     console.log(body);
 });
